@@ -1,25 +1,28 @@
-# SQLite. Versions 3.8.0 and up are supported.
-#   gem install sqlite3
-#
-#   Ensure the SQLite 3 gem is defined in your Gemfile
-#   gem 'sqlite3'
-#
 default: &default
-  adapter: sqlite3
-  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
-
-development:
-  <<: *default
-  database: db/development.sqlite3
-
-# Warning: The database defined as "test" will be erased and
-# re-generated from your development database when you run "rake".
-# Do not set this db to the same as development or production.
-test:
-  <<: *default
-  database: db/test.sqlite3
+  adapter: postgresql
+  encoding: unicode
+  pool:     <%= ENV['RAILS_MAX_THREADS'] || Rails.application.credentials[:rails_max_threads] || 5 %>
+  host:     <%= ENV['POSTGRES_HOST_DEFAULT'] || Rails.application.credentials[:postgres_host] || 'localhost' %>
+  port:     <%= ENV['POSTGRES_PORT_DEFAULT'] || Rails.application.credentials[:postgres_port] || 5432 %>
+  username: <%= ENV['POSTGRES_USERNAME_DEFAULT'] || Rails.application.credentials[:postgres_username] || 'suikoden_election_2021' %>
+  password: <%= ENV['POSTGRES_PASSWORD_DEFAULT'] || Rails.application.credentials[:postgres_password] || 'suikoden_election_2021' %>
 
 production:
   <<: *default
-  database: db/production.sqlite3
+  database: suikoden_election_2021_production
+  host: <%= ENV['POSTGRES_HOST_PRODUCTION'] || 'localhost' %>
+  port: <%= ENV['POSTGRES_PORT_PRODUCTION'] || 5432 %>
+  username: <%= ENV['POSTGRES_USERNAME_PRODUCTION'] || 'suikoden_election_2021' %>
+  password: <%= ENV['POSTGRES_PASSWORD_PRODUCTION'] || 'suikoden_election_2021' %>
+
+development:
+  <<: *default
+  database: suikoden_election_2021_development
+  host: <%= ENV['POSTGRES_HOST_DEVELOPMENT'] || 'localhost' %>
+  port: <%= ENV['POSTGRES_PORT_DEVELOPMENT'] || 5432 %>
+  username: <%= ENV['POSTGRES_USERNAME_DEVELOPMENT'] || 'suikoden_election_2021' %>
+  password: <%= ENV['POSTGRES_PASSWORD_DEVELOPMENT'] || 'suikoden_election_2021' %>
+
+test:
+  <<: *default
+  database: suikoden_election_2021_test
