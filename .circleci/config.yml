@@ -1,4 +1,6 @@
-version: 2
+version: 2.1
+orbs:
+  slack: circleci/slack@4.1
 jobs:
   build:
     docker:
@@ -79,6 +81,24 @@ jobs:
 #               --out /tmp/test-results/rspec.xml \
 #               --format progress \
 #               $TEST_FILES
+      - slack/notify:
+          channel: notice-circleci
+          event: always
+          custom: |
+            {
+              "blocks": [
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "plain_text",
+                      "text": "Suikoden Election 2021 (Database)",
+                      "emoji": true
+                    }
+                  ]
+                }
+              ]
+            }
       - store_test_results:
           path: /tmp/test-results
       - store_artifacts:
