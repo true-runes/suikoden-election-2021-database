@@ -29,8 +29,8 @@ test:
 
 tweet_storage:
   <<: *default
-  database: ENV['TWEET_STORAGE_DATABASE']
-  host: ENV['TWEET_STORAGE_HOST']
-  port: ENV['TWEET_STORAGE_PORT']
-  username: ENV['TWEET_STORAGE_USERNAME']
-  password: ENV['TWEET_STORAGE_PASSWORD']
+  database: <%= ENV['TWEET_STORAGE_DATABASE'] %>
+  host: <%= ENV['TWEET_STORAGE_HOST'] %>
+  port: <%= ENV['TWEET_STORAGE_PORT'] %>
+  username: <%= ENV['TWEET_STORAGE_USERNAME'] %>
+  password: <%= ENV['TWEET_STORAGE_PASSWORD'] %>
