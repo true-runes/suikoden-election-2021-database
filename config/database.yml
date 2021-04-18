@@ -26,3 +26,11 @@ test:
   port: <%= ENV['POSTGRES_PORT_DEVELOPMENT'] || 5432 %>
   username: <%= ENV['POSTGRES_USERNAME_DEVELOPMENT'] || 'suikoden_election_2021' %>
   password: <%= ENV['POSTGRES_PASSWORD_DEVELOPMENT'] || 'suikoden_election_2021' %>
+
+tweet_storage:
+  <<: *default
+  database: ENV['TWEET_STORAGE_DATABASE']
+  host: ENV['TWEET_STORAGE_HOST']
+  port: ENV['TWEET_STORAGE_PORT']
+  username: ENV['TWEET_STORAGE_USERNAME']
+  password: ENV['TWEET_STORAGE_PASSWORD']
