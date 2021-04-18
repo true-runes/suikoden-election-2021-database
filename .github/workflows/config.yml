@@ -5,7 +5,7 @@ jobs:
     name: 幻水総選挙2021（データベース）の CI
     runs-on: ubuntu-latest
     container:
-      image: ruby:3.0.0
+      image: ruby:3.0.1
       env:
         BUNDLE_PATH: vendor/bundle
     services:
