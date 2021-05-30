@@ -22,6 +22,7 @@ end
 
 group :development do
   gem 'listen'
+  gem 'pry-rails'
   gem 'rubocop-rails'
   gem 'spring'
 end
