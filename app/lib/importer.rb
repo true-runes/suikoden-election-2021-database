@@ -114,7 +114,7 @@ class Importer
             }
 
             mention = Mention.find_by(
-              user_id_number: url_attrs[:text],
+              user_id_number: mention_attrs[:text],
               tweet_id: (new_tweet || tweet).id
             )
             if mention.blank?
