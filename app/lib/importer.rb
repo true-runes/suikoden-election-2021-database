@@ -8,9 +8,9 @@ class Importer
       ActiveRecord::Base.transaction do
         # TweetStorage のオブジェクトは prefix として ts_ を付けている
         ts_target_tweets.each do |ts_target_tweet|
-          ##########
+          ###############
           # User
-          ##########
+          ###############
           user_attrs = {
             id_number: ts_target_tweet.user.id_number,
             name: ts_target_tweet.user.name,
@@ -25,9 +25,9 @@ class Importer
             new_user.save!
           end
 
-          ##########
+          ###############
           # Tweet
-          ##########
+          ###############
           # TODO: deserialize しているものは、モデルにメソッドを生やす
           tweet_attrs = {
             id_number: ts_target_tweet.id_number,
@@ -51,9 +51,9 @@ class Importer
             next
           end
 
-          ##########
+          ###############
           # Asset
-          ##########
+          ###############
           ts_target_tweet.deserialize.media.each do |asset|
             asset_attrs = {
               id_number: asset.id,
@@ -70,9 +70,9 @@ class Importer
             end
           end
 
-          ##########
+          ###############
           # Hashtag
-          ##########
+          ###############
           ts_target_tweet.deserialize.hashtags.each do |hashtag|
             hashtag_attrs = {
               text: hashtag.text,
@@ -89,29 +89,29 @@ class Importer
             end
           end
 
-          ##########
-          # Url
-          ##########
+          ###############
+          # InTweetUrl
+          ###############
           # ツイートの URL ではなく、ツイートに含まれている URL
           ts_target_tweet.deserialize.urls.each do |url|
-            url_attrs = {
+            in_tweet_url_attrs = {
               text: url.expanded_url.to_s,
               tweet: new_tweet || tweet
             }
 
-            url = Url.find_by(
-              text: url_attrs[:text],
+            in_tweet_url = InTweetUrl.find_by(
+              text: in_tweet_url_attrs[:text],
               tweet_id: (new_tweet || tweet).id
             )
-            if url.blank?
-              new_url = Url.new(url_attrs)
-              new_url.save!
+            if in_tweet_url.blank?
+              new_in_tweet_url = InTweetUrl.new(in_tweet_url_attrs)
+              new_in_tweet_url.save!
             end
           end
 
-          ##########
+          ###############
           # Mention
-          ##########
+          ###############
           ts_target_tweet.deserialize.user_mentions.each do |mention|
             mention_attrs = {
               user_id_number: mention.id,

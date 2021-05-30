@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :url do
-    
+  factory :in_tweet_url do
+
   end
 end
