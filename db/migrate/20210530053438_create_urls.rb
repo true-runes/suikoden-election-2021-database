@@ -7,5 +7,7 @@ class CreateUrls < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+
+    add_index :urls, [:tweet_id, :text], unique: true
   end
 end

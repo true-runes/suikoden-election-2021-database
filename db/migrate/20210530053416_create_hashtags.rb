@@ -7,5 +7,7 @@ class CreateHashtags < ActiveRecord::Migration[6.1]
 
       t.timestamps
     end
+
+    add_index :hashtags, [:tweet_id, :text], unique: true
   end
 end
