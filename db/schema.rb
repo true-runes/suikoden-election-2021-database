@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_30_054154) do
+ActiveRecord::Schema.define(version: 2021_05_30_054844) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,6 +23,19 @@ ActiveRecord::Schema.define(version: 2021_05_30_054154) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["tweet_id"], name: "index_assets_on_tweet_id"
+  end
+
+  create_table "direct_messages", force: :cascade do |t|
+    t.bigint "id_number"
+    t.datetime "sent_at"
+    t.string "text"
+    t.bigint "sender_id_number"
+    t.bigint "recipient_id_number"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["id_number"], name: "index_direct_messages_on_id_number", unique: true
+    t.index ["user_id"], name: "index_direct_messages_on_user_id"
   end
 
   create_table "hashtags", force: :cascade do |t|
