@@ -1,7 +1,8 @@
 class Importer
   class << self
-    # rubocop:disable Metrics/PerceivedComplexity, Metrics/MethodLength
-    def tweet_records_from_tweet_storage(ts_target_tweets)
+    # rubocop:disable Metrics/MethodLength
+    # FIXME: Update をする場合を考える（別途メソッドを作る？）
+    def tweet_records_from_tweet_storage(ts_target_tweets, update: false)
       ActiveRecord::Base.transaction do
         # TweetStorage のオブジェクトは prefix として ts_ を付けている
         ts_target_tweets.each do |ts_target_tweet|
@@ -16,11 +17,8 @@ class Importer
             is_protected: false
           }
 
-          # TODO: UPSERT なんだが、愚直すぎる（他も同様）
           user = User.find_by(id_number: user_attrs[:id_number])
-          if user.present? && ts_target_tweet.user.updated_at > user.updated_at
-            user.update!(user_attrs)
-          else
+          if user.blank?
             new_user = User.new(user_attrs)
             new_user.save!
           end
@@ -43,9 +41,7 @@ class Importer
           }
 
           tweet = Tweet.find_by(id_number: tweet_attrs[:id_number])
-          if tweet.present? && ts_target_tweet.updated_at > tweet.updated_at
-            tweet.update!(tweet_attrs)
-          else
+          if tweet.blank?
             new_tweet = Tweet.new(tweet_attrs)
             new_tweet.save!
           end
@@ -53,7 +49,7 @@ class Importer
           ##########
           # Asset
           ##########
-          deserialized_tweet_object.media.each do |asset|
+          ts_target_tweet.deserialize.media.each do |asset|
             asset_attrs = {
               id_number: asset.id,
               url: asset.media_url_https,
@@ -63,9 +59,7 @@ class Importer
             }
 
             asset = Asset.find_by(id_number: asset_attrs[:id_number])
-            if asset.present?
-              asset.update!(asset_attrs)
-            else
+            if asset.blank?
               new_asset = Asset.new(asset_attrs)
               new_asset.save!
             end
@@ -74,7 +68,7 @@ class Importer
           ##########
           # Hashtag
           ##########
-          deserialized_tweet_object.hashtags.each do |hashtag|
+          ts_target_tweet.deserialize.hashtags.each do |hashtag|
             hashtag_attrs = {
               text: hashtag.text,
               tweet: new_tweet || tweet
@@ -91,7 +85,7 @@ class Importer
           # Url
           ##########
           # ツイートの URL ではなく、ツイートに含まれている URL
-          deserialized_tweet_object.urls.each do |url|
+          ts_target_tweet.deserialize.urls.each do |url|
             url_attrs = {
               text: url.expanded_url.to_s,
               tweet: new_tweet || tweet
@@ -106,7 +100,7 @@ class Importer
         end
       end
     end
-    # rubocop:enable Metrics/PerceivedComplexity, Metrics/MethodLength
+    # rubocop:enable Metrics/MethodLength
 
     def direct_message_records_from_tweet_storage
       # TODO: DirectMessage の場合を書く
