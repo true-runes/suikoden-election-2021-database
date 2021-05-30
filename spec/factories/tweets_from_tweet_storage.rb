@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :tweet do
+  factory :tweet_from_tweet_storage do
     association :user
     id_number { 1_265_358_590_270_996_483}
     full_text { "新チャプター『Silent Hill』に登場する\n◆新殺人鬼エクセキューショナー\n◆新生存者シェリル・メイソン\n◆新マップ「サイレントヒル: ミッドウィッチ小学校」\nをご紹介します！\n\n詳しくはこちら: https://t.co/alLCeZ3Bgi\n#DeadbyDaylight #DbD #新キラー #ピラミッドヘッド https://t.co/fJOdFslrBa" }

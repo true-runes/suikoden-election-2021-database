@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :user do
+  factory :user_from_tweet_storage do
     id_number { 1471724029 }
     handle { '幻水総選挙2020' }
     screen_name { 'gensosenkyo' }
