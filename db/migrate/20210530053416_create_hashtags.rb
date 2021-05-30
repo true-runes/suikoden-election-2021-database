@@ -1,7 +1,7 @@
 class CreateHashtags < ActiveRecord::Migration[6.1]
   def change
     create_table :hashtags do |t|
-      t.string 'text'
+      t.string :text
 
       t.references :tweet
 

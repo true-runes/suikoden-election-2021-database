@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_054844) do
     t.bigint "id_number"
     t.string "url"
     t.string "asset_type"
+    t.boolean "is_public"
     t.bigint "tweet_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -31,6 +32,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_054844) do
     t.string "text"
     t.bigint "sender_id_number"
     t.bigint "recipient_id_number"
+    t.boolean "is_visible"
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -77,7 +79,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_054844) do
     t.bigint "id_number", null: false
     t.string "name", null: false
     t.string "screen_name", null: false
-    t.string "profile_image_url_https", default: "NOTHING", null: false
+    t.string "profile_image_url_https"
     t.boolean "is_protected"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
