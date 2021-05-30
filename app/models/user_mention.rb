@@ -1,0 +1,2 @@
+class UserMention < User
+end
