@@ -10,10 +10,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_30_044047) do
+ActiveRecord::Schema.define(version: 2021_05_30_053438) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "hashtags", force: :cascade do |t|
+    t.string "text"
+    t.bigint "tweet_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["text"], name: "index_hashtags_on_text", unique: true
+    t.index ["tweet_id"], name: "index_hashtags_on_tweet_id"
+  end
 
   create_table "tweets", force: :cascade do |t|
     t.bigint "id_number", null: false
@@ -30,6 +39,15 @@ ActiveRecord::Schema.define(version: 2021_05_30_044047) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["id_number"], name: "index_tweets_on_id_number", unique: true
     t.index ["user_id"], name: "index_tweets_on_user_id"
+  end
+
+  create_table "urls", force: :cascade do |t|
+    t.string "text"
+    t.bigint "tweet_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["text"], name: "index_urls_on_text", unique: true
+    t.index ["tweet_id"], name: "index_urls_on_tweet_id"
   end
 
   create_table "users", force: :cascade do |t|
