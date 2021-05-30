@@ -1,8 +1,10 @@
 class Importer
   class << self
     # rubocop:disable Metrics/MethodLength
+    # rubocop:disable Metrics/CyclomaticComplexity
+    # rubocop:disable Metrics/PerceivedComplexity
     # FIXME: Update をする場合を考える（別途メソッドを作る？）
-    def tweet_records_from_tweet_storage(ts_target_tweets, update: false)
+    def tweet_records_from_tweet_storage(ts_target_tweets, _update: false)
       ActiveRecord::Base.transaction do
         # TweetStorage のオブジェクトは prefix として ts_ を付けている
         ts_target_tweets.each do |ts_target_tweet|
@@ -41,9 +43,12 @@ class Importer
           }
 
           tweet = Tweet.find_by(id_number: tweet_attrs[:id_number])
+
           if tweet.blank?
             new_tweet = Tweet.new(tweet_attrs)
             new_tweet.save!
+          else
+            next
           end
 
           ##########
@@ -114,7 +119,7 @@ class Importer
             }
 
             mention = Mention.find_by(
-              user_id_number: mention_attrs[:text],
+              user_id_number: mention_attrs[:user_id_number],
               tweet_id: (new_tweet || tweet).id
             )
             if mention.blank?
@@ -122,10 +127,11 @@ class Importer
               new_mention.save!
             end
           end
-
         end
       end
     end
+    # rubocop:enable Metrics/PerceivedComplexity
+    # rubocop:enable Metrics/CyclomaticComplexity
     # rubocop:enable Metrics/MethodLength
 
     def direct_message_records_from_tweet_storage
