@@ -2,7 +2,6 @@ class Tweet < ApplicationRecord
   has_paper_trail
 
   belongs_to :user
-
   has_many :assets
   has_many :hashtags
   has_many :urls
@@ -10,9 +9,18 @@ class Tweet < ApplicationRecord
 
   validates :id_number, uniqueness: true
 
+  scope :not_retweet, -> { where(is_retweet: false) }
+  scope :be_retweet, -> { where(is_retweet: true) }
+  scope :with_hashtag, ->(hashtag) { joins(:hashtags).where(hashtags: { text: hashtag }) }
+  scope :mentioned_user, ->(user) { joins(:mentions).where(mentions: { user_id_number: user.id_number }) }
+
   # TODO: TweetStorage の方にも書く
-  def self.filter_tweeted_at(from, to)
+  def self.filter_by_tweeted_at(from, to)
     where('tweeted_at > ?', from).where('tweeted_at < ?', to)
+  end
+
+  def has_this_hashtag?(hashtag)
+    hashtags.any? { |h| h.text == hashtag }
   end
 
   def public?
