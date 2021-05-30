@@ -2,7 +2,7 @@ on: [push]
 name: 幻水総選挙2021（データベース）
 jobs:
   suikoden_election_2021_database_github_actions:
-    name: 幻水総選挙2021（データベース）の CI
+    name: GitHub Actions CI
     runs-on: ubuntu-latest
     container:
       image: ruby:3.0.1
