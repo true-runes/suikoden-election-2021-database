@@ -5,6 +5,7 @@ class CreateUsers < ActiveRecord::Migration[6.1]
       t.string 'name', null: false
       t.string 'screen_name', null: false
       t.string 'profile_image_url_https', null: false, default: 'NOTHING'
+      t.boolean 'is_protected'
 
       t.timestamps
     end
