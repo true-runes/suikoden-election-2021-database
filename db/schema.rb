@@ -48,12 +48,12 @@ ActiveRecord::Schema.define(version: 2021_05_30_085016) do
     t.index ["tweet_id"], name: "index_hashtags_on_tweet_id"
   end
 
-  create_table "mentioned_users", force: :cascade do |t|
-    t.bigint "id_number"
+  create_table "mentions", force: :cascade do |t|
+    t.bigint "user_id_number"
     t.bigint "tweet_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["tweet_id"], name: "index_mentioned_users_on_tweet_id"
+    t.index ["tweet_id"], name: "index_mentions_on_tweet_id"
   end
 
   create_table "tweets", force: :cascade do |t|
