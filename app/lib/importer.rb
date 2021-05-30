@@ -74,7 +74,10 @@ class Importer
               tweet: new_tweet || tweet
             }
 
-            hashtag = Hashtag.find_by(text: hashtag_attrs[:text])
+            hashtag = Hashtag.find_by(
+              text: hashtag_attrs[:text],
+              tweet_id: (new_tweet || tweet).id
+            )
             if hashtag.blank?
               new_hashtag = Hashtag.new(hashtag_attrs)
               new_hashtag.save!
@@ -91,12 +94,35 @@ class Importer
               tweet: new_tweet || tweet
             }
 
-            url = Url.find_by(text: url_attrs[:text])
+            url = Url.find_by(
+              text: url_attrs[:text],
+              tweet_id: (new_tweet || tweet).id
+            )
             if url.blank?
               new_url = Url.new(url_attrs)
               new_url.save!
             end
           end
+
+          ##########
+          # Mention
+          ##########
+          ts_target_tweet.deserialize.user_mentions.each do |mention|
+            mention_attrs = {
+              user_id_number: mention.id,
+              tweet: new_tweet || tweet
+            }
+
+            mention = Mention.find_by(
+              user_id_number: url_attrs[:text],
+              tweet_id: (new_tweet || tweet).id
+            )
+            if mention.blank?
+              new_mention = Mention.new(mention_attrs)
+              new_mention.save!
+            end
+          end
+
         end
       end
     end

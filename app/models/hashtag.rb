@@ -1,7 +1,7 @@
 class Hashtag < ApplicationRecord
   belongs_to :tweet
 
-  validates :text, uniquness: { scope: [:tweet_id]  }
+  validates :text, uniqueness: { scope: [:tweet_id]  }
 
   # TODO: テスト書く
   def has_this_hashtag?(hashtag)
