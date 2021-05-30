@@ -6,8 +6,10 @@ ruby '3.0.1'
 gem 'rails'
 
 gem 'bootsnap', require: false
+gem 'bugsnag'
 gem 'dotenv-rails'
 gem 'google-apis-sheets_v4'
+gem 'paper_trail'
 gem 'pg'
 gem 'puma'
 gem 'twitter'
