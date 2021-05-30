@@ -16,7 +16,14 @@ class Tweet < ApplicationRecord
 
   # TODO: TweetStorage の方にも書く
   def self.filter_by_tweeted_at(from, to)
-    where('tweeted_at > ?', from).where('tweeted_at < ?', to)
+    where(tweeted_at: from..to)
+  end
+
+  def self.valid_votes
+    begin_datetime = Time.zone.parse('2021-06-11 21:00:00')
+    end_datetime = Time.zone.parse('2021-06-13 11:59:59')
+
+    where(tweeted_at: begin_datetime..end_datetime)
   end
 
   def has_this_hashtag?(hashtag)
@@ -47,7 +54,19 @@ class Tweet < ApplicationRecord
     "https://twitter.com/#{user.screen_name}/status/#{id_number}"
   end
 
-  def url_only_by_id_number
+  def url_by_id_number_only
     "https://twitter.com/twitter/status/#{id_number}"
+  end
+
+  def has_hashtags?
+    hashtags.present?
+  end
+
+  def has_assets?
+    assets.present?
+  end
+
+  def has_in_tweet_urls?
+    in_tweet_urls.present?
   end
 end
