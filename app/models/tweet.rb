@@ -4,7 +4,7 @@ class Tweet < ApplicationRecord
   belongs_to :user
   has_many :assets
   has_many :hashtags
-  has_many :urls
+  has_many :in_tweet_urls
   has_many :mentions
 
   validates :id_number, uniqueness: true
@@ -41,5 +41,13 @@ class Tweet < ApplicationRecord
 
   def retweet?
     is_retweet
+  end
+
+  def url
+    "https://twitter.com/#{user.screen_name}/status/#{id_number}"
+  end
+
+  def url_only_by_id_number
+    "https://twitter.com/twitter/status/#{id_number}"
   end
 end
