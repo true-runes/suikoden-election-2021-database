@@ -8,6 +8,8 @@ class CreateTweets < ActiveRecord::Migration[6.1]
       t.bigint 'in_reply_to_user_id_number'
       t.boolean 'is_retweeted'
       t.string 'language'
+      t.boolean 'is_public'
+      t.datetime 'tweeted_at'
 
       t.references :user
 
