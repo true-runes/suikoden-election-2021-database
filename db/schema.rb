@@ -49,6 +49,15 @@ ActiveRecord::Schema.define(version: 2021_05_30_085016) do
     t.index ["tweet_id"], name: "index_hashtags_on_tweet_id"
   end
 
+  create_table "in_tweet_urls", force: :cascade do |t|
+    t.string "text"
+    t.bigint "tweet_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id", "text"], name: "index_in_tweet_urls_on_tweet_id_and_text", unique: true
+    t.index ["tweet_id"], name: "index_in_tweet_urls_on_tweet_id"
+  end
+
   create_table "mentions", force: :cascade do |t|
     t.bigint "user_id_number"
     t.bigint "tweet_id"
@@ -73,15 +82,6 @@ ActiveRecord::Schema.define(version: 2021_05_30_085016) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["id_number"], name: "index_tweets_on_id_number", unique: true
     t.index ["user_id"], name: "index_tweets_on_user_id"
-  end
-
-  create_table "urls", force: :cascade do |t|
-    t.string "text"
-    t.bigint "tweet_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["tweet_id", "text"], name: "index_urls_on_tweet_id_and_text", unique: true
-    t.index ["tweet_id"], name: "index_urls_on_tweet_id"
   end
 
   create_table "users", force: :cascade do |t|

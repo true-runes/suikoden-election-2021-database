@@ -6,6 +6,8 @@ class User < ApplicationRecord
 
   validates :id_number, uniqueness: true
 
+  scope :by_tweets, ->(target_tweets) { joins(:tweets).where(tweets: target_tweets) }
+
   def assets; end
 
   def protected?
