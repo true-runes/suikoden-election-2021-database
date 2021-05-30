@@ -1,9 +1,4 @@
 # cf. https://developers.google.com/sheets/api/quickstart/ruby
-
-require 'google/apis/sheets_v4'
-require 'googleauth'
-require 'googleauth/stores/file_token_store'
-
 # rubocop:disable Rails/Output
 module GoogleSheetApi
   class Client
