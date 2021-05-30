@@ -7,6 +7,7 @@ gem 'rails'
 
 gem 'bootsnap', require: false
 gem 'dotenv-rails'
+gem 'google-apis-sheets_v4'
 gem 'pg'
 gem 'puma'
 gem 'twitter'
