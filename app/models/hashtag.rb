@@ -1,8 +1,6 @@
 class Hashtag < ApplicationRecord
   belongs_to :tweet
 
-  validates :text, uniqueness: true
-
   # TODO: テスト書く
   def has_this_hashtag?(hashtag)
     hashtags.any? { |h| h == hashtag }
