@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_085016) do
     t.bigint "tweet_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id", "text"], name: "index_hashtags_on_tweet_id_and_text", unique: true
     t.index ["tweet_id"], name: "index_hashtags_on_tweet_id"
   end
 
@@ -53,6 +54,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_085016) do
     t.bigint "tweet_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id", "user_id_number"], name: "index_mentions_on_tweet_id_and_user_id_number", unique: true
     t.index ["tweet_id"], name: "index_mentions_on_tweet_id"
   end
 
@@ -78,6 +80,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_085016) do
     t.bigint "tweet_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id", "text"], name: "index_urls_on_tweet_id_and_text", unique: true
     t.index ["tweet_id"], name: "index_urls_on_tweet_id"
   end
 
