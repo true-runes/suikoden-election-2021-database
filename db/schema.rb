@@ -10,21 +10,102 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_04_18_071020) do
+ActiveRecord::Schema.define(version: 2021_05_30_085016) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "assets", force: :cascade do |t|
+    t.bigint "id_number"
+    t.string "url"
+    t.string "asset_type"
+    t.boolean "is_public"
+    t.bigint "tweet_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id"], name: "index_assets_on_tweet_id"
+  end
+
+  create_table "direct_messages", force: :cascade do |t|
+    t.bigint "id_number"
+    t.datetime "sent_at"
+    t.string "text"
+    t.bigint "sender_id_number"
+    t.bigint "recipient_id_number"
+    t.boolean "is_visible"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["id_number"], name: "index_direct_messages_on_id_number", unique: true
+    t.index ["user_id"], name: "index_direct_messages_on_user_id"
+  end
+
+  create_table "hashtags", force: :cascade do |t|
+    t.string "text"
+    t.bigint "tweet_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id", "text"], name: "index_hashtags_on_tweet_id_and_text", unique: true
+    t.index ["tweet_id"], name: "index_hashtags_on_tweet_id"
+  end
+
+  create_table "mentions", force: :cascade do |t|
+    t.bigint "user_id_number"
+    t.bigint "tweet_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id", "user_id_number"], name: "index_mentions_on_tweet_id_and_user_id_number", unique: true
+    t.index ["tweet_id"], name: "index_mentions_on_tweet_id"
+  end
+
+  create_table "tweets", force: :cascade do |t|
+    t.bigint "id_number", null: false
+    t.string "full_text"
+    t.string "source"
+    t.bigint "in_reply_to_tweet_id_number"
+    t.bigint "in_reply_to_user_id_number"
+    t.boolean "is_retweet"
+    t.string "language"
+    t.boolean "is_public"
+    t.datetime "tweeted_at"
+    t.bigint "user_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["id_number"], name: "index_tweets_on_id_number", unique: true
+    t.index ["user_id"], name: "index_tweets_on_user_id"
+  end
+
+  create_table "urls", force: :cascade do |t|
+    t.string "text"
+    t.bigint "tweet_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id", "text"], name: "index_urls_on_tweet_id_and_text", unique: true
+    t.index ["tweet_id"], name: "index_urls_on_tweet_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.bigint "id_number", null: false
     t.string "name", null: false
     t.string "screen_name", null: false
-    t.string "profile_image_url_https", default: "NOTHING", null: false
+    t.string "profile_image_url_https"
+    t.boolean "is_protected"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["id_number"], name: "index_users_on_id_number", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["screen_name"], name: "index_users_on_screen_name"
+  end
+
+  create_table "versions", force: :cascade do |t|
+    t.string "item_type"
+    t.string "{:null=>false}"
+    t.bigint "item_id", null: false
+    t.string "event", null: false
+    t.string "whodunnit"
+    t.text "object"
+    t.datetime "created_at"
+    t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
 end

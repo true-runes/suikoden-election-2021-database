@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :tweet do
+  factory :direct_message do
     
   end
 end

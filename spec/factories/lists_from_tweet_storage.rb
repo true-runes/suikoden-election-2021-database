@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :list do
+  factory :list_from_user_storage do
     id_number { 719_421_755_110_993_920 }
     name { 'bne_app' }
     slug { 'bne_app' }

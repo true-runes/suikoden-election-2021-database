@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :user do
-
+  factory :hashtag do
+    
   end
 end

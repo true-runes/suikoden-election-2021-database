@@ -6,7 +6,10 @@ ruby '3.0.1'
 gem 'rails'
 
 gem 'bootsnap', require: false
+gem 'bugsnag'
 gem 'dotenv-rails'
+gem 'google-apis-sheets_v4'
+gem 'paper_trail'
 gem 'pg'
 gem 'puma'
 gem 'twitter'
@@ -19,6 +22,7 @@ end
 
 group :development do
   gem 'listen'
+  gem 'pry-rails'
   gem 'rubocop-rails'
   gem 'spring'
 end
