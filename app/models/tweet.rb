@@ -6,6 +6,7 @@ class Tweet < ApplicationRecord
   has_many :assets
   has_many :hashtags
   has_many :urls
+  has_many :mentioned_users
 
   validates :id_number, uniqueness: true
 
