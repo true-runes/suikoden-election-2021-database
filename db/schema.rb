@@ -37,6 +37,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_044047) do
     t.string "name", null: false
     t.string "screen_name", null: false
     t.string "profile_image_url_https", default: "NOTHING", null: false
+    t.boolean "is_protected"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["id_number"], name: "index_users_on_id_number", unique: true
