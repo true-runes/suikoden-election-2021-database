@@ -1,15 +1,15 @@
 class CreateTweets < ActiveRecord::Migration[6.1]
   def change
     create_table :tweets do |t|
-      t.bigint 'id_number', null: false
-      t.string 'full_text'
-      t.string 'source'
-      t.bigint 'in_reply_to_tweet_id_number'
-      t.bigint 'in_reply_to_user_id_number'
-      t.boolean 'is_retweet'
-      t.string 'language'
-      t.boolean 'is_public'
-      t.datetime 'tweeted_at'
+      t.bigint :id_number, null: false
+      t.string :full_text
+      t.string :source
+      t.bigint :in_reply_to_tweet_id_number
+      t.bigint :in_reply_to_user_id_number
+      t.boolean :is_retweet
+      t.string :language
+      t.boolean :is_public
+      t.datetime :tweeted_at
 
       t.references :user
 

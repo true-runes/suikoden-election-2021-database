@@ -6,6 +6,7 @@ class CreateDirectMessages < ActiveRecord::Migration[6.1]
       t.string :text
       t.bigint :sender_id_number
       t.bigint :recipient_id_number
+      t.boolean :is_visible
 
       t.references :user
 
