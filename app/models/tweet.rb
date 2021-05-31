@@ -19,6 +19,18 @@ class Tweet < ApplicationRecord
     where(tweeted_at: from..to)
   end
 
+  def self.not_by_gensosenkyo
+    # gensosenkyo: 1471724029,
+    # sub_gensosenkyo: 1388758231825018881
+
+    target_user_ids = [
+      User.find_by(id_number: 1471724029)&.id,
+      User.find_by(id_number: 1388758231825018881)&.id,
+    ].compact!
+
+    where.not(user_id: target_user_ids)
+  end
+
   def self.valid_votes
     begin_datetime = Time.zone.parse('2021-06-11 21:00:00')
     end_datetime = Time.zone.parse('2021-06-13 11:59:59')
