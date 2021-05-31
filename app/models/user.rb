@@ -21,4 +21,13 @@ class User < ApplicationRecord
   def url_by_id_number_only
     "https://twitter.com/i/user/#{id_number}"
   end
+
+  def gensosenkyo_admin?
+    gensosenkyo_admin_user_id_numbers = {
+      'gensosenkyo': 1471724029,
+      'sub_gensosenkyo': 1388758231825018881
+    }
+
+    id_number.in?(gensosenkyo_admin_user_id_numbers.values)
+  end
 end
