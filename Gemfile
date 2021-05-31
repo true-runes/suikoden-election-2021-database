@@ -26,3 +26,7 @@ group :development do
   gem 'rubocop-rails'
   gem 'spring'
 end
+
+group :test do
+  gem 'rspec_junit_formatter'
+end
