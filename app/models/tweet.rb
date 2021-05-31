@@ -11,7 +11,7 @@ class Tweet < ApplicationRecord
 
   scope :not_retweet, -> { where(is_retweet: false) }
   scope :be_retweet, -> { where(is_retweet: true) }
-  scope :with_hashtag, ->(hashtag) { joins(:hashtags).where(hashtags: { text: hashtag }) }
+  scope :contains_hashtag, ->(hashtag) { joins(:hashtags).where(hashtags: { text: hashtag }) }
   scope :mentioned_user, ->(user) { joins(:mentions).where(mentions: { user_id_number: user.id_number }) }
 
   # TODO: TweetStorage の方にも書く
