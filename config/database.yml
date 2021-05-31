@@ -22,10 +22,10 @@ development:
 test:
   <<: *default
   database: suikoden_election_2021_test
-  host: <%= ENV['POSTGRES_HOST_DEVELOPMENT'] || 'localhost' %>
-  port: <%= ENV['POSTGRES_PORT_DEVELOPMENT'] || 5432 %>
-  username: <%= ENV['POSTGRES_USERNAME_DEVELOPMENT'] || 'root' %>
-  password: <%= ENV['POSTGRES_PASSWORD_DEVELOPMENT'] || 'postgres' %>
+  host: <%= ENV['POSTGRES_HOST_TEST'] || 'localhost' %>
+  port: <%= ENV['POSTGRES_PORT_TEST'] || 5432 %>
+  username: <%= ENV['POSTGRES_USERNAME_TEST'] || 'root' %>
+  password: <%= ENV['POSTGRES_PASSWORD_TEST'] || 'postgres' %>
 
 tweet_storage:
   <<: *default
