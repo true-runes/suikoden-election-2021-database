@@ -15,8 +15,14 @@ module GoogleSheetApi
       set_basic_valiables
     end
 
-    def execute(hashtag)
-      update_data(target_tweets(hashtag))
+    def execute(hashtag, options={})
+      update_data(target_tweets(hashtag, options))
+    rescue StandardError => e
+      Rails.logger.fatal 'FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute'
+      Rails.logger.fatal e if e.present?
+
+      bugsnag_error_message = "FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute / #{e}"
+      Bugsnag.notify(bugsnag_error_message)
     end
 
     # 既存のデータを読み込み、新規のデータをその後ろにくっつけ、それを貼り付けている
@@ -38,15 +44,25 @@ module GoogleSheetApi
       )
     end
 
-    def target_tweets(hashtag)
+    # TODO: not_retweet だったり '2021-05-01' をハードコーディングしたりしてるのは微妙
+    def target_tweets(hashtag, options={})
       # 初回操作対応
       beginning_search_tweet_id_number = @max_tweet_id_number.present? ? @max_tweet_id_number + 1 : 1
 
-      Tweet.not_retweet.contains_hashtag(hashtag).not_by_gensosenkyo.where(
-        id_number: beginning_search_tweet_id_number..
-      ).where(
-        tweeted_at: Time.zone.parse('2021-05-01')..
-      ).order(tweeted_at: :asc)
+      if options[:raw_log] == true
+        Tweet.contains_hashtag(hashtag).where(
+          id_number: beginning_search_tweet_id_number..
+        ).where(
+          tweeted_at: Time.zone.parse('2021-04-01')..
+        ).order(tweeted_at: :asc)
+      else
+        # not_retweet, contains_hashtag, not_by_gensosenkyo, tweeted_at
+        Tweet.not_retweet.contains_hashtag(hashtag).not_by_gensosenkyo.where(
+          id_number: beginning_search_tweet_id_number..
+        ).where(
+          tweeted_at: Time.zone.parse('2021-05-01')..
+        ).order(tweeted_at: :asc)
+      end
     end
 
     def set_basic_valiables
