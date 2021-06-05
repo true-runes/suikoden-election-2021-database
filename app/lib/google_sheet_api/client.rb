@@ -14,6 +14,7 @@ module GoogleSheetApi
     def create
       service = Google::Apis::SheetsV4::SheetsService.new
       service.client_options.application_name = APPLICATION_NAME
+      service.request_options.retries = 3
       service.authorization = authorize
 
       service
