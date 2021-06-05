@@ -12,6 +12,7 @@ gem 'google-apis-sheets_v4'
 gem 'paper_trail'
 gem 'pg'
 gem 'puma'
+gem 'rollbar'
 gem 'twitter'
 
 group :development, :test do
