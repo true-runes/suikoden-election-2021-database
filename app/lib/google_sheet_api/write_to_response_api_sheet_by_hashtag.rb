@@ -105,7 +105,7 @@ module GoogleSheetApi
 
     def set_max_tweet_id_number(already_sheet_data)
       # 初回実行時の対応
-      @max_tweet_id_number = 0 if already_sheet_data.values.count == 1
+      return @max_tweet_id_number = 0 if already_sheet_data.values.count == 1
 
       tweet_id_numbers = already_sheet_data.values.map do |row|
         next if row[1] == 'tweetId'
