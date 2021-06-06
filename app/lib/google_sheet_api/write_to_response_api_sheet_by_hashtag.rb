@@ -17,7 +17,10 @@ module GoogleSheetApi
       set_basic_valiables
     end
 
-    def execute(hashtag, options={}, logger_options={})
+    # TODO: 引数が多すぎる
+    def execute(hashtag, options={}, logger_options={}, all_overwrite: false)
+      options.merge!(beginning_search_tweet_id_number: 1) if all_overwrite == true
+
       update_target_tweets = target_tweets(hashtag, options)
 
       merged_logger_options = {
@@ -27,7 +30,7 @@ module GoogleSheetApi
       }.merge(logger_options)
       Rails.logger.info(LoggerMethods.convert_hash_to_json(merged_logger_options))
 
-      update_data(update_target_tweets)
+      update_data(update_target_tweets, all_overwrite: all_overwrite)
     rescue StandardError => e
       Rails.logger.fatal(LoggerMethods.convert_hash_to_json(message: 'FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute'))
       Rails.logger.fatal(LoggerMethods.convert_hash_to_json(message: e)) if e.present?
@@ -38,12 +41,19 @@ module GoogleSheetApi
     end
 
     # 既存のデータを読み込み、新規のデータをその後ろにくっつけ、それを貼り付けている
-    def update_data(tweets)
+    def update_data(tweets, all_overwrite: false)
       updated_values = []
 
-      @already_sheet_all_data.each { |v| updated_values << v }
-      # id列 に入る番号は (行数 - 1) だから、@number_of_already_existing_rows の値をそのまま入れれば良い
-      all_append_rows = all_append_rows(tweets, @number_of_already_existing_rows)
+      # 'id'列 に入る番号は (行数 - 1) だから、@number_of_already_existing_rows の値をそのまま入れれば良い (#row_value の第二引数を参照のこと)
+      # つまり @number_of_already_existing_rows が 1 の場合（＝シートがヘッダのみの空っぽの場合）は、挿入されるレコードの 'id'列 の数値は 1 からインクリメントされていくということ
+      if all_overwrite == true
+        updated_values << @already_sheet_all_data[0] # ヘッダ行
+        all_append_rows = all_append_rows(tweets, 1) # 'id' が 1 からのすべての行
+      else
+        @already_sheet_all_data.each { |v| updated_values << v }
+        all_append_rows = all_append_rows(tweets, @number_of_already_existing_rows)
+      end
+
       all_append_rows.each { |v| updated_values << v }
 
       value_range_object = Google::Apis::SheetsV4::ValueRange.new(values: updated_values)
