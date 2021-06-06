@@ -23,6 +23,7 @@ module GoogleSheetApi
 
       bugsnag_error_message = "FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute / #{e}"
       Bugsnag.notify(bugsnag_error_message)
+      Rollbar.error(e, 'FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute')
     end
 
     # 既存のデータを読み込み、新規のデータをその後ろにくっつけ、それを貼り付けている
