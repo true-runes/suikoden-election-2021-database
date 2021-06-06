@@ -17,13 +17,13 @@ module LoggerMethods
       # 長すぎると Papertrail が記録してくれない
       tweets.each do |tweet|
         inserted_hash = {
-          id_number: tweet.id_number,
+          id_number: tweet.id_number
           # user_name: tweet.user.name,
-          screen_name: tweet.user.screen_name,
+          # screen_name: tweet.user.screen_name,
           # full_text: tweet.full_text,
           # is_retweet: tweet.is_retweet,
-          url: tweet.url,
-          tweeted_at: tweet.tweeted_at
+          # url: tweet.url,
+          # tweeted_at: tweet.tweeted_at
           # media_exists: tweet.has_assets?,
           # is_public: tweet.is_public?,
           # is_mentioned_to_gensosenkyo_admin: tweet.is_mentioned_to_gensosenkyo_admin?
