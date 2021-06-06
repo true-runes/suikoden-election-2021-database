@@ -12,6 +12,7 @@ gem 'google-apis-sheets_v4'
 gem 'paper_trail'
 gem 'pg'
 gem 'puma'
+gem 'remote_syslog_logger'
 gem 'rollbar'
 gem 'twitter'
 

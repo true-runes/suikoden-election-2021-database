@@ -5,6 +5,8 @@
 
 module GoogleSheetApi
   class WriteToResponseApiSheetByHashtag
+    include LoggerMethods
+
     def initialize(spreadsheet_id: nil, sheet_name: nil)
       @client = GoogleSheetApi::Client.new.create
       @spreadsheet_id = spreadsheet_id || ENV['RECOMMENDED_QUOTES_WORKSHEET_ID']
@@ -16,10 +18,20 @@ module GoogleSheetApi
     end
 
     def execute(hashtag, options={})
-      update_data(target_tweets(hashtag, options))
+      update_target_tweets = target_tweets(hashtag, options)
+
+      Rails.logger.info(
+        LoggerMethods.convert_hash_to_json(
+          hashtag: hashtag,
+          message: 'update_target_tweets',
+          tweets: LoggerMethods.convert_tweet_objects_to_array(update_target_tweets)
+        )
+      )
+
+      update_data(update_target_tweets)
     rescue StandardError => e
-      Rails.logger.fatal 'FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute'
-      Rails.logger.fatal e if e.present?
+      Rails.logger.fatal(LoggerMethods.convert_hash_to_json(message: 'FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute'))
+      Rails.logger.fatal(LoggerMethods.convert_hash_to_json(message: e)) if e.present?
 
       bugsnag_error_message = "FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute / #{e}"
       Bugsnag.notify(bugsnag_error_message)
