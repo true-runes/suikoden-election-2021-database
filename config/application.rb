@@ -30,6 +30,6 @@ module SuikodenElection2021Database
     config.time_zone = 'Tokyo'
     config.api_only = true
 
-    config.logger = RemoteSyslogLogger.new('logs.papertrailapp.com', 15515)
+    config.logger = RemoteSyslogLogger.new(ENV['REMOTE_SYSLOG_LOGGER_HOST'], ENV['REMOTE_SYSLOG_LOGGER_PORT'])
   end
 end
