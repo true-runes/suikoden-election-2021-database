@@ -6,11 +6,15 @@
 
 ## データベースに格納してあるユーザーの公開状態を全チェックし、データの更新する
 
+- ユーザー数 1,450 件 で 約 2.5 分を要した
+
 ```bash
 $ $(which bundle) exec rails runner "TwitterRestApi::CheckProtectedUsers.new.update_all_user_is_protected_statuses"
 ```
 
 ## データベースに格納してあるツイートの公開状態を全チェックし、データの更新する
+
+- ツイート 7,328 件 で 約 7 分を要した
 
 ```
 $(which bundle) exec rails runner "TwitterRestApi::CheckPublicTweets.new.update_all_tweet_is_public_statuses"
