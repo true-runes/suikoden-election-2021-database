@@ -69,7 +69,7 @@ module GoogleSheetApi
       if options[:beginning_search_tweet_id_number].present?
         beginning_search_tweet_id_number = options[:beginning_search_tweet_id_number]
       else
-      # 初回操作対応
+        # 初回操作対応
         beginning_search_tweet_id_number = @max_tweet_id_number.present? ? @max_tweet_id_number + 1 : 1
       end
       end_search_tweet_id_number = options[:end_search_tweet_id_number]
