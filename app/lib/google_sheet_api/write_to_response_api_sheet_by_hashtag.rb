@@ -17,16 +17,15 @@ module GoogleSheetApi
       set_basic_valiables
     end
 
-    def execute(hashtag, options={})
+    def execute(hashtag, options={}, logger_options={})
       update_target_tweets = target_tweets(hashtag, options)
 
-      Rails.logger.info(
-        LoggerMethods.convert_hash_to_json(
-          hashtag: hashtag,
-          message: 'update_target_tweets',
-          tweets: LoggerMethods.convert_tweet_objects_to_array(update_target_tweets)
-        )
-      )
+      merged_logger_options = {
+        hashtag: hashtag,
+        message: 'update_target_tweets',
+        tweets: LoggerMethods.convert_tweet_objects_to_array(update_target_tweets)
+      }.merge(logger_options)
+      Rails.logger.info(LoggerMethods.convert_hash_to_json(merged_logger_options))
 
       update_data(update_target_tweets)
     rescue StandardError => e
