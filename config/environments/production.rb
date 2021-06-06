@@ -74,6 +74,9 @@ Rails.application.configure do
   # Tell Active Support which deprecation messages to disallow.
   config.active_support.disallowed_deprecation_warnings = []
 
+  # PaperTrail の容量が復活したらコメントアウトを外す
+  # config.logger = RemoteSyslogLogger.new(ENV['REMOTE_SYSLOG_LOGGER_HOST'], ENV['REMOTE_SYSLOG_LOGGER_PORT'])
+
   # Use default logging formatter so that PID and timestamp are not suppressed.
   config.log_formatter = ::Logger::Formatter.new
 
