@@ -19,14 +19,30 @@ class Tweet < ApplicationRecord
     where(tweeted_at: from..to)
   end
 
-  def self.not_by_gensosenkyo
+  def self.not_by_gensosenkyo_families
     # gensosenkyo: 1471724029,
     # sub_gensosenkyo: 1388758231825018881
 
     target_user_ids = [
       User.find_by(id_number: 1471724029)&.id,
       User.find_by(id_number: 1388758231825018881)&.id,
-    ].compact!
+    ].compact
+
+    where.not(user_id: target_user_ids)
+  end
+
+  def self.not_by_gensosenkyo_main
+    target_user_ids = [
+      User.find_by(id_number: 1471724029)&.id,
+    ].compact
+
+    where.not(user_id: target_user_ids)
+  end
+
+  def self.not_by_gensosenkyo_sub
+    target_user_ids = [
+      User.find_by(id_number: 1388758231825018881)&.id,
+    ].compact
 
     where.not(user_id: target_user_ids)
   end
