@@ -5,6 +5,8 @@
 
 module GoogleSheetApi
   class WriteToResponseApiSheetByHashtag
+    include LoggerMethods
+
     def initialize(spreadsheet_id: nil, sheet_name: nil)
       @client = GoogleSheetApi::Client.new.create
       @spreadsheet_id = spreadsheet_id || ENV['RECOMMENDED_QUOTES_WORKSHEET_ID']
@@ -16,13 +18,24 @@ module GoogleSheetApi
     end
 
     def execute(hashtag, options={})
-      update_data(target_tweets(hashtag, options))
+      update_target_tweets = target_tweets(hashtag, options)
+
+      Rails.logger.info(
+        LoggerMethods.convert_hash_to_json(
+          hashtag: hashtag,
+          message: 'update_target_tweets',
+          tweets: LoggerMethods.convert_tweet_objects_to_array(update_target_tweets)
+        )
+      )
+
+      update_data(update_target_tweets)
     rescue StandardError => e
-      Rails.logger.fatal 'FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute'
-      Rails.logger.fatal e if e.present?
+      Rails.logger.fatal(LoggerMethods.convert_hash_to_json(message: 'FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute'))
+      Rails.logger.fatal(LoggerMethods.convert_hash_to_json(message: e)) if e.present?
 
       bugsnag_error_message = "FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute / #{e}"
       Bugsnag.notify(bugsnag_error_message)
+      Rollbar.error(e, 'FATAL エラーです: GoogleSheetApi::GoogleSheetApi#execute')
     end
 
     # 既存のデータを読み込み、新規のデータをその後ろにくっつけ、それを貼り付けている
@@ -44,26 +57,44 @@ module GoogleSheetApi
       )
     end
 
-    # TODO: not_retweet だったり '2021-05-01' をハードコーディングしたりしてるのは微妙
+    # [options]
+    # Time: beginning_at, end_at
+    # Boolean: remove_rt, not_by_gensosenkyo
+    # Bigint: end_search_tweet_id_number
+    # rubocop:disable Style/ConditionalAssignment
     def target_tweets(hashtag, options={})
-      # 初回操作対応
-      beginning_search_tweet_id_number = @max_tweet_id_number.present? ? @max_tweet_id_number + 1 : 1
+      beginning_at = options[:beginning_at] || '2021-05-01'
+      end_at = options[:end_at] || '2030-12-31'
 
-      if options[:raw_log] == true
-        Tweet.contains_hashtag(hashtag).where(
-          id_number: beginning_search_tweet_id_number..
-        ).where(
-          tweeted_at: Time.zone.parse('2021-04-01')..
-        ).order(tweeted_at: :asc)
+      if options[:beginning_search_tweet_id_number].present?
+        beginning_search_tweet_id_number = options[:beginning_search_tweet_id_number]
       else
-        # not_retweet, contains_hashtag, not_by_gensosenkyo, tweeted_at
-        Tweet.not_retweet.contains_hashtag(hashtag).not_by_gensosenkyo.where(
-          id_number: beginning_search_tweet_id_number..
-        ).where(
-          tweeted_at: Time.zone.parse('2021-05-01')..
-        ).order(tweeted_at: :asc)
+        # 初回操作対応
+        beginning_search_tweet_id_number = @max_tweet_id_number.present? ? @max_tweet_id_number + 1 : 1
       end
+      end_search_tweet_id_number = options[:end_search_tweet_id_number]
+
+      active_record_relation = Tweet.contains_hashtag(hashtag).where(
+        tweeted_at: beginning_at..end_at
+      )
+      active_record_relation = active_record_relation.not_retweet if options[:remove_rt] == true
+      active_record_relation = active_record_relation.not_by_gensosenkyo if options[:not_by_gensosenkyo] == true
+
+      if end_search_tweet_id_number.present?
+        active_record_relation = active_record_relation.where(
+          id_number: beginning_search_tweet_id_number..end_search_tweet_id_number
+        )
+      else
+        active_record_relation = active_record_relation.where(
+          id_number: beginning_search_tweet_id_number..
+        )
+      end
+
+      active_record_relation.where(
+        id_number: beginning_search_tweet_id_number..
+      ).order(tweeted_at: :asc)
     end
+    # rubocop:enable Style/ConditionalAssignment
 
     def set_basic_valiables
       already_sheet_all_data = @client.get_spreadsheet_values(
