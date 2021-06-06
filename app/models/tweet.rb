@@ -26,7 +26,7 @@ class Tweet < ApplicationRecord
     target_user_ids = [
       User.find_by(id_number: 1471724029)&.id,
       User.find_by(id_number: 1388758231825018881)&.id,
-    ].compact!
+    ].compact
 
     where.not(user_id: target_user_ids)
   end
