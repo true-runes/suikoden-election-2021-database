@@ -29,5 +29,7 @@ module SuikodenElection2021Database
     config.load_defaults 6.1
     config.time_zone = 'Tokyo'
     config.api_only = true
+
+    config.logger = RemoteSyslogLogger.new('logs.papertrailapp.com', 15515)
   end
 end
