@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_30_085016) do
+ActiveRecord::Schema.define(version: 2021_06_07_090631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,7 +28,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_085016) do
 
   create_table "direct_messages", force: :cascade do |t|
     t.bigint "id_number"
-    t.datetime "sent_at"
+    t.datetime "messaged_at"
     t.string "text"
     t.bigint "sender_id_number"
     t.bigint "recipient_id_number"
@@ -36,6 +36,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_085016) do
     t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.text "api_response"
     t.index ["id_number"], name: "index_direct_messages_on_id_number", unique: true
     t.index ["user_id"], name: "index_direct_messages_on_user_id"
   end
@@ -92,6 +93,7 @@ ActiveRecord::Schema.define(version: 2021_05_30_085016) do
     t.boolean "is_protected"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "born_at"
     t.index ["id_number"], name: "index_users_on_id_number", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["screen_name"], name: "index_users_on_screen_name"
