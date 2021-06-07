@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_07_054908) do
+ActiveRecord::Schema.define(version: 2021_06_07_090631) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -93,6 +93,7 @@ ActiveRecord::Schema.define(version: 2021_06_07_054908) do
     t.boolean "is_protected"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.datetime "born_at"
     t.index ["id_number"], name: "index_users_on_id_number", unique: true
     t.index ["name"], name: "index_users_on_name"
     t.index ["screen_name"], name: "index_users_on_screen_name"
