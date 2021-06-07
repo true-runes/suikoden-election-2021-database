@@ -4,7 +4,7 @@ module TwitterRestApi
 
     INTERVAL_SECONDS = 5
 
-    def initialize(consumer_key=nil, consumer_secret=nil, access_token=nil, access_secret=nil)
+    def initialize(consumer_key: nil, consumer_secret: nil, access_token: nil, access_secret: nil)
       @client = Twitter::REST::Client.new do |config|
         config.consumer_key        = consumer_key || ENV['TWITTER_CONSUMER_KEY']
         config.consumer_secret     = consumer_secret || ENV['TWITTER_CONSUMER_SECRET']
