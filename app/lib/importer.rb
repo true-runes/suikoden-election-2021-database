@@ -16,7 +16,8 @@ class Importer
             name: ts_target_tweet.user.name,
             screen_name: ts_target_tweet.user.screen_name,
             profile_image_url_https: ts_target_tweet.user.deserialize.profile_image_url_https.to_s,
-            is_protected: false
+            is_protected: false,
+            born_at: ts_target_tweet.created_at
           }
 
           user = User.find_by(id_number: user_attrs[:id_number])

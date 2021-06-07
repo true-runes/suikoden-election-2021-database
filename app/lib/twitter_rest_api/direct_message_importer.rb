@@ -50,7 +50,8 @@ module TwitterRestApi
                   name: target_user.name,
                   screen_name: target_user.screen_name,
                   profile_image_url_https: target_user.profile_image_url_https.to_s,
-                  is_protected: target_user.protected?
+                  is_protected: target_user.protected?,
+                  born_at: target_user.created_at
                 )
                 user.save!
               end
