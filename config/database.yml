@@ -1,7 +1,7 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  pool:     <%= ENV['RAILS_MAX_THREADS'] || Rails.application.credentials[:rails_max_threads] || 5 %>
+  pool: <%= ENV['RAILS_MAX_THREADS'] || Rails.application.credentials[:rails_max_threads] || 5 %>
 
 production:
   <<: *default

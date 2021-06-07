@@ -10,10 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_07_090631) do
+ActiveRecord::Schema.define(version: 2021_06_07_214306) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "analyze_syntaxes", force: :cascade do |t|
+    t.string "language"
+    t.text "sentences", array: true
+    t.text "tokens", array: true
+    t.bigint "tweet_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["tweet_id"], name: "index_analyze_syntaxes_on_tweet_id"
+  end
 
   create_table "assets", force: :cascade do |t|
     t.bigint "id_number"

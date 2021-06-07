@@ -9,6 +9,7 @@ gem 'bootsnap', require: false
 gem 'bugsnag'
 gem 'dotenv-rails'
 gem 'google-apis-sheets_v4'
+gem 'google-cloud-language'
 gem 'paper_trail'
 gem 'pg'
 gem 'puma'
@@ -19,12 +20,12 @@ gem 'twitter'
 group :development, :test do
   gem 'byebug'
   gem 'factory_bot_rails'
+  gem 'pry-rails'
   gem 'rspec-rails'
 end
 
 group :development do
   gem 'listen'
-  gem 'pry-rails'
   gem 'rubocop-rails'
   gem 'spring'
 end
