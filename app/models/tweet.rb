@@ -47,11 +47,18 @@ class Tweet < ApplicationRecord
     where.not(user_id: target_user_ids)
   end
 
-  def self.valid_votes
+  def self.valid_term_votes
     begin_datetime = Time.zone.parse('2021-06-11 21:00:00')
     end_datetime = Time.zone.parse('2021-06-13 11:59:59')
 
     where(tweeted_at: begin_datetime..end_datetime)
+  end
+
+  def valid_term_vote?
+    begin_datetime = Time.zone.parse('2021-06-11 21:00:00')
+    end_datetime = Time.zone.parse('2021-06-13 11:59:59')
+
+    tweeted_at >= begin_datetime && tweeted_at <= end_datetime
   end
 
   def has_this_hashtag?(hashtag)
