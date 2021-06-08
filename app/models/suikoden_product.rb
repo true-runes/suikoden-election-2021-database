@@ -1,0 +1,2 @@
+class SuikodenProduct < ApplicationRecord
+end
