@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_08_042625) do
+ActiveRecord::Schema.define(version: 2021_06_08_083720) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,33 +36,27 @@ ActiveRecord::Schema.define(version: 2021_06_08_042625) do
     t.index ["tweet_id"], name: "index_assets_on_tweet_id"
   end
 
-  create_table "chara_name_and_nicknames", force: :cascade do |t|
-    t.bigint "character_name_id"
-    t.bigint "character_nickname_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["character_name_id"], name: "index_chara_name_and_nicknames_on_character_name_id"
-    t.index ["character_nickname_id"], name: "index_chara_name_and_nicknames_on_character_nickname_id"
-  end
-
-  create_table "chara_name_and_products", force: :cascade do |t|
-    t.bigint "character_name_id"
-    t.bigint "suikoden_product_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["character_name_id"], name: "index_chara_name_and_products_on_character_name_id"
-    t.index ["suikoden_product_id"], name: "index_chara_name_and_products_on_suikoden_product_id"
-  end
-
-  create_table "character_names", force: :cascade do |t|
-    t.string "gensosenkyo"
-    t.string "english"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
   create_table "character_nicknames", force: :cascade do |t|
+    t.bigint "character_id"
+    t.bigint "nickname_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_id"], name: "index_character_nicknames_on_character_id"
+    t.index ["nickname_id"], name: "index_character_nicknames_on_nickname_id"
+  end
+
+  create_table "character_products", force: :cascade do |t|
+    t.bigint "character_id"
+    t.bigint "product_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_id"], name: "index_character_products_on_character_id"
+    t.index ["product_id"], name: "index_character_products_on_product_id"
+  end
+
+  create_table "characters", force: :cascade do |t|
     t.string "name"
+    t.string "name_en"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
@@ -109,11 +103,20 @@ ActiveRecord::Schema.define(version: 2021_06_08_042625) do
     t.index ["tweet_id"], name: "index_mentions_on_tweet_id"
   end
 
-  create_table "suikoden_products", force: :cascade do |t|
+  create_table "nicknames", force: :cascade do |t|
     t.string "name"
-    t.string "english_name"
+    t.string "name_en"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "products", force: :cascade do |t|
+    t.string "name"
+    t.string "name_en"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name"], name: "index_products_on_name", unique: true
+    t.index ["name_en"], name: "index_products_on_name_en", unique: true
   end
 
   create_table "tweets", force: :cascade do |t|
@@ -158,8 +161,8 @@ ActiveRecord::Schema.define(version: 2021_06_08_042625) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
-  add_foreign_key "chara_name_and_nicknames", "character_names"
-  add_foreign_key "chara_name_and_nicknames", "character_nicknames"
-  add_foreign_key "chara_name_and_products", "character_names"
-  add_foreign_key "chara_name_and_products", "suikoden_products"
+  add_foreign_key "character_nicknames", "characters"
+  add_foreign_key "character_nicknames", "nicknames"
+  add_foreign_key "character_products", "characters"
+  add_foreign_key "character_products", "products"
 end

@@ -1,2 +1,0 @@
-class CharaNameAndProduct < ApplicationRecord
-end

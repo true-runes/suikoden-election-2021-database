@@ -1,2 +1,0 @@
-class CharaNameAndNickname < ApplicationRecord
-end
