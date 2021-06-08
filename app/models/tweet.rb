@@ -1,6 +1,7 @@
 class Tweet < ApplicationRecord
   has_paper_trail
 
+  has_one :analyze_syntax
   belongs_to :user
   has_many :assets
   has_many :hashtags
