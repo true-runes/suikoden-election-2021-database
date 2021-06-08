@@ -245,10 +245,14 @@ class AnalyzeSyntax < ApplicationRecord
   end
 
   ###################################################################
-  # NOUN タグに絞ろうとしたが ベルクート が VERB だったりしたんでやめた
+  # NOUN タグだけに絞ろうとしたが ベルクート が VERB だったので例外的に追加
   ###################################################################
   def words_with_basic_filters
-    convert_analyze_syntax_response_token_objects.map(&:lemma)
+    filtered_tokens = convert_analyze_syntax_response_token_objects.select do |token|
+      token.tag == 'NOUN' || token.tag == 'VERB'
+    end
+
+    filtered_tokens.map(&:lemma)
   end
 
   ###################################################################
