@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :character_nick_name do
+  factory :character_nickname do
     
   end
 end

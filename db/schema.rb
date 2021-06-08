@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_07_214306) do
+ActiveRecord::Schema.define(version: 2021_06_08_042625) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,37 @@ ActiveRecord::Schema.define(version: 2021_06_07_214306) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["tweet_id"], name: "index_assets_on_tweet_id"
+  end
+
+  create_table "chara_name_and_nicknames", force: :cascade do |t|
+    t.bigint "character_name_id"
+    t.bigint "character_nickname_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_name_id"], name: "index_chara_name_and_nicknames_on_character_name_id"
+    t.index ["character_nickname_id"], name: "index_chara_name_and_nicknames_on_character_nickname_id"
+  end
+
+  create_table "chara_name_and_products", force: :cascade do |t|
+    t.bigint "character_name_id"
+    t.bigint "suikoden_product_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_name_id"], name: "index_chara_name_and_products_on_character_name_id"
+    t.index ["suikoden_product_id"], name: "index_chara_name_and_products_on_suikoden_product_id"
+  end
+
+  create_table "character_names", force: :cascade do |t|
+    t.string "gensosenkyo"
+    t.string "english"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "character_nicknames", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "direct_messages", force: :cascade do |t|
@@ -78,6 +109,13 @@ ActiveRecord::Schema.define(version: 2021_06_07_214306) do
     t.index ["tweet_id"], name: "index_mentions_on_tweet_id"
   end
 
+  create_table "suikoden_products", force: :cascade do |t|
+    t.string "name"
+    t.string "english_name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
   create_table "tweets", force: :cascade do |t|
     t.bigint "id_number", null: false
     t.string "full_text"
@@ -120,4 +158,8 @@ ActiveRecord::Schema.define(version: 2021_06_07_214306) do
     t.index ["item_type", "item_id"], name: "index_versions_on_item_type_and_item_id"
   end
 
+  add_foreign_key "chara_name_and_nicknames", "character_names"
+  add_foreign_key "chara_name_and_nicknames", "character_nicknames"
+  add_foreign_key "chara_name_and_products", "character_names"
+  add_foreign_key "chara_name_and_products", "suikoden_products"
 end

@@ -1,0 +1,2 @@
+class CharacterNickname < ApplicationRecord
+end
