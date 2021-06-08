@@ -6,15 +6,25 @@
 require "google/cloud/language"
 
 module GoogleNaturalLanguageApi
-  class PickupCharacterNames
+  class Analyzer
     attr_reader :client
+
+    def self.execute_and_create_record_to_database
+      analyzer = new
+
+      ActiveRecord::Base.transaction do
+        Tweet.not_retweet.each do |tweet|
+          analyzer.create_analyze_syntax_record(tweet) if AnalyzeSyntax.find_by(tweet_id: tweet.id).blank?
+        end
+      end
+    end
 
     def initialize
       @language = Google::Cloud::Language.language_service
       @client = Google::Cloud::Language.language_service
     end
 
-    def create_analyze_syntax_object(tweet)
+    def create_analyze_syntax_record(tweet)
       response = analyze_tweet_syntax_by_api(tweet)
 
       ActiveRecord::Base.transaction do

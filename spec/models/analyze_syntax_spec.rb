@@ -2,6 +2,7 @@ require 'rails_helper'
 
 RSpec.describe AnalyzeSyntax, type: :model do
   let(:analyze_syntax) { build(:analyze_syntax) }
+  let(:analyze_syntax_with_noun_and_noun) { build(:analyze_syntax, :noun_and_noun) }
 
   let(:hashed_sentences) { analyze_syntax.hashed_sentences }
   let(:hashed_tokens) { analyze_syntax.hashed_tokens }
@@ -34,6 +35,12 @@ RSpec.describe AnalyzeSyntax, type: :model do
     it 'sentences が Array in AnalyzeSyntaxResponse::Sentence で戻ってくること' do
       expect(sentences.instance_of?(Array)).to be_truthy
       expect(sentences.map(&:class).all? { |klass| klass == AnalyzeSyntaxResponse::Sentence }).to be_truthy
+    end
+  end
+
+  describe "#check_words" do
+    it 'NOUN - NOUN の lemma が接続された状態で check_words の戻り値に含まれていること' do
+      expect(analyze_syntax_with_noun_and_noun.check_words).to include('グランマイヤー')
     end
   end
 end
