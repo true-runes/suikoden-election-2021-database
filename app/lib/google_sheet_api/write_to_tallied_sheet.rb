@@ -76,8 +76,8 @@ module GoogleSheetApi
         .order(messaged_at: :asc)
     end
 
-    def character_names_for_dropdown(tweet)
-      candidate_names = SuikodenDatabase::PickupCharacterNames.execute(tweet)
+    def character_names_for_dropdown(tweet_or_dm)
+      candidate_names = SuikodenDatabase::PickupCharacterNames.execute(tweet_or_dm)
 
       candidate_names.join(',')
     end
@@ -144,7 +144,7 @@ module GoogleSheetApi
         nil, # 要レビュー？
         nil, # 二次チェック済み？
         nil, # 全チェック終了？
-        character_names_for_dropdown(tweet), # ドロップダウン用のカンマ区切り文字列
+        character_names_for_dropdown(dm), # ドロップダウン用のカンマ区切り文字列
         nil, # ここより右の列は任意項目
         nil, # 全振り？（全振りの場合はキャラクター名が入る。集計確定後に別途入れる）
         nil, # 登場作品 / ここは別の工程で入る（今の段階では断定できないため）
