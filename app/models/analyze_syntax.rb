@@ -1,7 +1,8 @@
 require 'nkf'
 
 class AnalyzeSyntax < ApplicationRecord
-  belongs_to :tweet
+  belongs_to :tweet, optional: true
+  belongs_to :direct_message, optional: true
 
   def convert_analyze_syntax_response_sentence_objects
     hashed_sentences.map do |hashed_sentence|

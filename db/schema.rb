@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_08_083720) do
+ActiveRecord::Schema.define(version: 2021_06_11_051011) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,8 @@ ActiveRecord::Schema.define(version: 2021_06_08_083720) do
     t.bigint "tweet_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "direct_message_id"
+    t.index ["direct_message_id"], name: "index_analyze_syntaxes_on_direct_message_id"
     t.index ["tweet_id"], name: "index_analyze_syntaxes_on_tweet_id"
   end
 
