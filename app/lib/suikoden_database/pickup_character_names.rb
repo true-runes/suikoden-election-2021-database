@@ -26,8 +26,14 @@ module SuikodenDatabase
         false
       end
 
+      # check_words の中身を連続で見ていった際に、これらの語の場合はキャラ名サーチをしない
       def skip_words
         [
+          '一',
+          'な',
+          'る',
+          'なる',
+          '王',
           '異',
           '世',
           '界',

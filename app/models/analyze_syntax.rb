@@ -58,7 +58,7 @@ class AnalyzeSyntax < ApplicationRecord
       words_with_noun_and_x_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_noun_and_x_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_noun_and_x_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) }
-    ).uniq
+    ).uniq.reject(&:empty?)
   end
   # rubocop:enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
 
