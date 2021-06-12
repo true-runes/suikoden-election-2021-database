@@ -33,6 +33,7 @@ module SuikodenDatabase
       # そもそも check_words に含まれていない語はここではどうしようもない
       def skip_words
         [
+          '様',
           '票',
           '/',
           'm',
