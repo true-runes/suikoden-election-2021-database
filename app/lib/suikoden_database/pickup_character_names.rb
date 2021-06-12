@@ -2,7 +2,9 @@ module SuikodenDatabase
   class PickupCharacterNames
     class << self
       def execute(tweet_or_dm)
-        check_words = tweet_or_dm.analyze_syntax.check_words
+        # FIXME: tweet_or_dm.analyze_syntax が nil の場合がある
+        # おそらく DM は別タイミングで取得しているから、DM の analyze_syntax が存在しないときだろう
+        check_words = tweet_or_dm.analyze_syntax&.check_words
 
         gensosenkyo_candidate_names = []
         check_words.each do |check_word|
@@ -31,6 +33,7 @@ module SuikodenDatabase
       # そもそも check_words に含まれていない語はここではどうしようもない
       def skip_words
         [
+          '様',
           '票',
           '/',
           'm',
