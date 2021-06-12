@@ -110,6 +110,7 @@ module GoogleSheetApi
         .order(tweeted_at: :asc)
     end
 
+    # rubocop:disable Style/RedundantInterpolation
     def row_data_for_tweet(tweet)
       [
         nil, # id
@@ -131,6 +132,7 @@ module GoogleSheetApi
         tweet.user.screen_name, # Q列: screen_name を出力する
         tweet.user.url, # R列: ユーザーURL
         tweet.tweeted_at.strftime('%Y/%m/%d %H:%M:%S'), # S列: ツイート日時
+        "#{tweet.id_number}", # T列
       ]
     end
 
@@ -155,10 +157,11 @@ module GoogleSheetApi
         nil, # Q列: 返信したかのチェックをシート操作で入れるので、操作しない
         dm.sender.name, # R列
         dm.sender.screen_name, # S列
-        dm.sender.id_number, # T列
+        "#{dm.sender.id_number}", # T列
         dm.messaged_at.strftime('%Y/%m/%d %H:%M:%S'), # U列
       ]
     end
+    # rubocop:enable Style/RedundantInterpolation
 
     def sheets_in_public_timeline_tweets
       [
