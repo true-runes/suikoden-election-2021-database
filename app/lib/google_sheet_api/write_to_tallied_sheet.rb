@@ -4,12 +4,12 @@ module GoogleSheetApi
   class WriteToTalliedSheet
     include LoggerMethods
 
-    def initialize(spreadsheet_id: nil, sheet_name: nil)
+    def initialize(spreadsheet_id: nil, _sheet_name: nil)
       @client = GoogleSheetApi::Client.new.create
       @spreadsheet_id = spreadsheet_id || ENV['TALLIED_WORKSHEET_ID']
-      @sheet_name = sheet_name || ENV['TALLIED_SHEET_NAME']
+      # @sheet_name = sheet_name || ENV['TALLIED_SHEET_NAME']
       # セル数が上限の 5,000,000 以下で、シート全部がカバーできるであろう範囲（A1形式しか指定できないのでこういう方法しかないと思う）
-      @range = "#{@sheet_name}!A1:AD10000"
+      # @range = "#{@sheet_name}!A1:AD10000"
     end
 
     def execute(category: nil)
@@ -128,13 +128,16 @@ module GoogleSheetApi
         nil, # 全振り？（全振りの場合はキャラクター名が入る。集計確定後に別途入れる）
         nil, # 登場作品 / ここは別の工程で入る（今の段階では断定できないため）
         tweet.language, # 言語
+        tweet.user.screen_name, # Q列: screen_name を出力する
+        tweet.user.url, # R列: ユーザーURL
+        tweet.tweeted_at.strftime('%Y/%m/%d %H:%M:%S'), # S列: ツイート日時
       ]
     end
 
     def row_data_for_dm(dm)
       [
         nil, # id
-        dm.sender.name, # url の列だが、送信者の名前を入れる（よくない）
+        "#{dm.sender.name} (@#{dm.sender.screen_name})", # url の列だが、送信者の名前を入れる（よくない）
         dm.text, # 内容
         nil, # キャラ1
         nil, # キャラ2
@@ -149,6 +152,11 @@ module GoogleSheetApi
         nil, # 全振り？（全振りの場合はキャラクター名が入る。集計確定後に別途入れる）
         nil, # 登場作品 / ここは別の工程で入る（今の段階では断定できないため）
         nil, # 言語（DM の場合は手入力）
+        nil, # Q列: 返信したかのチェックをシート操作で入れるので、操作しない
+        dm.sender.name, # R列
+        dm.sender.screen_name, # S列
+        dm.sender.id_number, # T列
+        dm.messaged_at.strftime('%Y/%m/%d %H:%M:%S'), # U列
       ]
     end
 
