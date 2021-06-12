@@ -38,26 +38,37 @@ class AnalyzeSyntax < ApplicationRecord
       words_with_noun_and_punct_and_noun_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_noun_and_punct_and_noun_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_noun_and_punct_and_noun_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
+      words_with_noun_and_punct_and_noun_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_basic_filters +
       words_with_basic_filters.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_basic_filters.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_basic_filters.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
+      words_with_basic_filters.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_noun_and_affix_tags +
       words_with_noun_and_affix_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_noun_and_affix_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_noun_and_affix_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
+      words_with_noun_and_affix_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_num_and_affix_tags +
       words_with_num_and_affix_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_num_and_affix_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_num_and_affix_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
+      words_with_num_and_affix_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_noun_and_noun_tags +
       words_with_noun_and_noun_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_noun_and_noun_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_noun_and_noun_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
+      words_with_noun_and_noun_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_noun_and_x_tags +
       words_with_noun_and_x_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_noun_and_x_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
-      words_with_noun_and_x_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) }
+      words_with_noun_and_x_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
+      words_with_noun_and_x_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
+      words_with_affix_and_affix_tags +
+      words_with_affix_and_affix_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
+      words_with_affix_and_affix_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
+      words_with_affix_and_affix_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
+      words_with_affix_and_affix_tags.map { |word| remove_beginning_unnecesary_strings(word) }
     ).uniq.reject(&:empty?)
   end
   # rubocop:enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
@@ -246,11 +257,48 @@ class AnalyzeSyntax < ApplicationRecord
   end
 
   ###################################################################
-  # NOUN タグだけに絞ろうとしたが ベルクート が VERB だったので例外的に追加
+  # AFFIX - AFFIX という並びのタグの部分を抽出する
+  # 特定の文脈における「坊ちゃん」などを抽出する
+  ###################################################################
+  def words_with_affix_and_affix_tags
+    words_with_affix_and_affix_tags = []
+    target_start_index_numbers = token_start_index_numbers_with_affix_and_affix_tags
+
+    target_start_index_numbers.each do |index_number|
+      word = hashed_tokens[index_number]['lemma'] + hashed_tokens[index_number + 1]['lemma']
+
+      words_with_affix_and_affix_tags << word
+    end
+
+    words_with_affix_and_affix_tags
+  end
+
+  def token_start_index_numbers_with_affix_and_affix_tags
+    target_tags = ['AFFIX', 'AFFIX'].freeze
+    tokens = convert_analyze_syntax_response_token_objects
+    tags_array = tokens.map(&:tag)
+    token_start_index_numbers = []
+
+    # 2つの要素の配列の判別をするために、配列の大きさから 1 を引いた index まで調べる
+    (tags_array.count - 1).times.each do |i|
+      target_array_in_tokens = [
+        tags_array[i],
+        tags_array[i + 1],
+      ]
+
+      token_start_index_numbers << i if target_array_in_tokens == target_tags
+    end
+
+    token_start_index_numbers
+  end
+
+  ###################################################################
+  # NOUN タグだけに絞ろうとしたが「ベルクート」が VERB だったので例外的に追加
+  # 「シュウ」が AFFIX だったので追加
   ###################################################################
   def words_with_basic_filters
     filtered_tokens = convert_analyze_syntax_response_token_objects.select do |token|
-      token.tag == 'NOUN' || token.tag == 'VERB'
+      token.tag == 'NOUN' || token.tag == 'VERB' || token.tag == 'AFFIX'
     end
 
     filtered_tokens.map(&:lemma)
@@ -282,6 +330,21 @@ class AnalyzeSyntax < ApplicationRecord
   ###################################################################
   def convert_zenkaku_numbers_to_hankaku_numbers(word)
     word.tr('０-９ａ-ｚＡ-Ｚ', '0-9a-zA-Z')
+  end
+
+  ###################################################################
+  # 抽出要素の先頭に不要文字が含まれている場合には削除する
+  # 「：リオン」などを「リオン」などへ統一する
+  # 「★ナナミ」などを「ナナミ」などへ統一する
+  ###################################################################
+  def remove_beginning_unnecesary_strings(word)
+    # "２：" に対する対応 (id_number: 1396459824892710913)
+    removed_beginning_unnecesary_strings = word.sub(/\A２/, '')
+
+    # "★" に対する対応 (id_number: 1403442321144750081)
+    removed_beginning_unnecesary_strings = removed_beginning_unnecesary_strings.sub(/\A★/, '')
+
+    removed_beginning_unnecesary_strings.sub(/\A：/, '')
   end
 
   ###################################################################
