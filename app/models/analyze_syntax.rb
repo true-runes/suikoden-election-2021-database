@@ -38,37 +38,37 @@ class AnalyzeSyntax < ApplicationRecord
       words_with_noun_and_punct_and_noun_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_noun_and_punct_and_noun_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_noun_and_punct_and_noun_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
-      words_with_noun_and_punct_and_noun_tags.map { |word| remove_beginning_colon(word) } +
+      words_with_noun_and_punct_and_noun_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_basic_filters +
       words_with_basic_filters.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_basic_filters.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_basic_filters.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
-      words_with_basic_filters.map { |word| remove_beginning_colon(word) } +
+      words_with_basic_filters.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_noun_and_affix_tags +
       words_with_noun_and_affix_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_noun_and_affix_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_noun_and_affix_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
-      words_with_noun_and_affix_tags.map { |word| remove_beginning_colon(word) } +
+      words_with_noun_and_affix_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_num_and_affix_tags +
       words_with_num_and_affix_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_num_and_affix_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_num_and_affix_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
-      words_with_num_and_affix_tags.map { |word| remove_beginning_colon(word) } +
+      words_with_num_and_affix_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_noun_and_noun_tags +
       words_with_noun_and_noun_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_noun_and_noun_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_noun_and_noun_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
-      words_with_noun_and_noun_tags.map { |word| remove_beginning_colon(word) } +
+      words_with_noun_and_noun_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_noun_and_x_tags +
       words_with_noun_and_x_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_noun_and_x_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_noun_and_x_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
-      words_with_noun_and_x_tags.map { |word| remove_beginning_colon(word) } +
+      words_with_noun_and_x_tags.map { |word| remove_beginning_unnecesary_strings(word) } +
       words_with_affix_and_affix_tags +
       words_with_affix_and_affix_tags.map { |word| remove_all_three_point_readers_from_word(word) } +
       words_with_affix_and_affix_tags.map { |word| convert_hankaku_katakana_to_zenkaku_katakana(word) } +
       words_with_affix_and_affix_tags.map { |word| convert_zenkaku_numbers_to_hankaku_numbers(word) } +
-      words_with_affix_and_affix_tags.map { |word| remove_beginning_colon(word) }
+      words_with_affix_and_affix_tags.map { |word| remove_beginning_unnecesary_strings(word) }
     ).uniq.reject(&:empty?)
   end
   # rubocop:enable Metrics/PerceivedComplexity, Metrics/CyclomaticComplexity
@@ -333,14 +333,18 @@ class AnalyzeSyntax < ApplicationRecord
   end
 
   ###################################################################
-  # 抽出要素の先頭に「：」が含まれている場合には削除する
+  # 抽出要素の先頭に不要文字が含まれている場合には削除する
   # 「：リオン」などを「リオン」などへ統一する
+  # 「★ナナミ」などを「ナナミ」などへ統一する
   ###################################################################
-  def remove_beginning_colon(word)
-    # "２：" に対する例外的対処 (id_number: 1396459824892710913)
-    removed_beginning_colon_word = word.sub(/\A２/, '')
+  def remove_beginning_unnecesary_strings(word)
+    # "２：" に対する対応 (id_number: 1396459824892710913)
+    removed_beginning_unnecesary_strings = word.sub(/\A２/, '')
 
-    removed_beginning_colon_word.sub(/\A：/, '')
+    # "★" に対する対応 (id_number: 1403442321144750081)
+    removed_beginning_unnecesary_strings = removed_beginning_unnecesary_strings.sub(/\A★/, '')
+
+    removed_beginning_unnecesary_strings.sub(/\A：/, '')
   end
 
   ###################################################################
