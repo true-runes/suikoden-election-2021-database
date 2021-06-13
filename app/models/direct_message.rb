@@ -33,7 +33,7 @@ class DirectMessage < ApplicationRecord
   def self.only_beginning_valid_term_votes
     begin_datetime = Time.zone.parse('2021-06-11 21:00:00')
 
-    where(messaged_at: begin_datetime..end_datetime)
+    where(messaged_at: begin_datetime..)
   end
 
   # gensosenkyo: 1471724029,
