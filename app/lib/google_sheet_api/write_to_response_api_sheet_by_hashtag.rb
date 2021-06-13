@@ -101,9 +101,14 @@ module GoogleSheetApi
         )
       end
 
+      # tweetd_at のみの ORDER_BY では秒単位で一致する可能性があるので、id_number も用いる（id_number だけでもいい）
       active_record_relation.where(
         id_number: beginning_search_tweet_id_number..
-      ).order(tweeted_at: :asc)
+      ).order(
+        tweeted_at: :asc
+      ).order(
+        id_number: :asc
+      )
     end
     # rubocop:enable Style/ConditionalAssignment
 
