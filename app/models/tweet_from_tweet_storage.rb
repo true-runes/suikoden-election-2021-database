@@ -16,6 +16,7 @@ class TweetFromTweetStorage < ApplicationRecord
   scope :order_by_id_number_asc, -> { order(id_number: :asc) }
 
   # TODO: Refactoring
+  # TODO: 並び順の一意性の確保のため、order(id_number: :asc)
   # Pick up the latest id_number record
   scope :remove_duplicated, lambda {
     tweet_id_numbers = pluck(:id_number)

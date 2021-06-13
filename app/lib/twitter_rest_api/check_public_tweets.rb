@@ -38,6 +38,7 @@ module TwitterRestApi
       not_public_tweet_id_numbers = []
 
       # データベースに保存してある id_number のツイートを一挙取得して、戻り値に存在するかどうかで public かそうでないかを判断する
+      # TODO: 並び順の一意性の確保のため、order(id_number: :asc)
       Tweet.order(tweeted_at: :asc).pluck(:id_number).each_slice(100) do |sliced_all_id_numbers|
         sliced_id_numbers_tweets_id_numbers = @client.statuses(sliced_all_id_numbers).map(&:id)
         not_public_tweet_id_numbers_in_this_sliced_id_numbers = sliced_all_id_numbers - sliced_id_numbers_tweets_id_numbers

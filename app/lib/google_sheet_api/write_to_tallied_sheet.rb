@@ -74,6 +74,7 @@ module GoogleSheetApi
         .valid_term_votes
         .to_gensosenkyo_main
         .order(messaged_at: :asc)
+        .order(id_number: :asc)
     end
 
     def character_names_for_dropdown(tweet_or_dm)
@@ -90,6 +91,7 @@ module GoogleSheetApi
         .contains_hashtag('幻水総選挙2021')
         .not_by_gensosenkyo_main
         .order(tweeted_at: :asc)
+        .order(id_number: :asc)
     end
 
     def odai_shosetsu_tweets
@@ -99,6 +101,7 @@ module GoogleSheetApi
         .contains_hashtag('幻水総選挙お題小説')
         .where(tweeted_at: ..Time.zone.parse('2021-06-07 02:20:00'))
         .order(tweeted_at: :asc)
+        .order(id_number: :asc)
     end
 
     def oshi_serifu_tweets
@@ -108,6 +111,7 @@ module GoogleSheetApi
         .contains_hashtag('幻水総選挙推し台詞')
         .where(tweeted_at: ..Time.zone.parse('2021-06-10 23:59:59'))
         .order(tweeted_at: :asc)
+        .order(id_number: :asc)
     end
 
     # rubocop:disable Style/RedundantInterpolation
