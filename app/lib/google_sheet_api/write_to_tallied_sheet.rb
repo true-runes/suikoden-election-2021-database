@@ -71,7 +71,7 @@ module GoogleSheetApi
 
     def filtered_direct_messaages
       DirectMessage
-        .valid_term_votes
+        .extend_valid_term_votes
         .to_gensosenkyo_main
         .order(messaged_at: :asc)
         .order(id_number: :asc)
