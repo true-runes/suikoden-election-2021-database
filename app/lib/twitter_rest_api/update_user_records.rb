@@ -77,6 +77,7 @@ module TwitterRestApi
       not_public_user_objects = []
       public_user_objects = []
 
+      # TODO: 並び順の一意性の確保のため、order(id_number: :asc)
       User.order(created_at: :asc).pluck(:id_number).each_slice(100) do |sliced_all_id_numbers|
         sliced_id_numbers_users = @client.users(sliced_all_id_numbers)
 
