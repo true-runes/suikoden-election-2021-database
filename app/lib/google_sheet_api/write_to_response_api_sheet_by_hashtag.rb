@@ -87,7 +87,7 @@ module GoogleSheetApi
         tweeted_at: beginning_at..end_at
       )
       active_record_relation = active_record_relation.not_retweet if options[:remove_rt] == true
-      active_record_relation = active_record_relation.not_by_gensosenkyo_families if options[:not_by_gensosenkyo_families] == true
+      active_record_relation = active_record_relation.not_by_gensosenkyo_family if options[:not_by_gensosenkyo_family] == true
       active_record_relation = active_record_relation.not_by_gensosenkyo_main if options[:not_by_gensosenkyo_main] == true
       active_record_relation = active_record_relation.not_by_gensosenkyo_sub if options[:not_by_gensosenkyo_sub] == true
 
