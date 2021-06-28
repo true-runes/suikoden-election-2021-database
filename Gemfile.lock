@@ -88,7 +88,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faraday (1.4.2)
+    faraday (1.4.3)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -124,8 +124,8 @@ GEM
       rexml
       signet (~> 0.14)
       webrick
-    google-apis-sheets_v4 (0.6.0)
-      google-apis-core (~> 0.1)
+    google-apis-sheets_v4 (0.7.0)
+      google-apis-core (>= 0.3, < 2.a)
     google-cloud-core (1.6.0)
       google-cloud-env (~> 1.0)
       google-cloud-errors (~> 1.0)
