@@ -88,7 +88,7 @@ GEM
     factory_bot_rails (6.2.0)
       factory_bot (~> 6.2.0)
       railties (>= 5.0.0)
-    faraday (1.5.0)
+    faraday (1.5.1)
       faraday-em_http (~> 1.0)
       faraday-em_synchrony (~> 1.0)
       faraday-excon (~> 1.1)
@@ -103,7 +103,7 @@ GEM
     faraday-excon (1.1.0)
     faraday-httpclient (1.0.1)
     faraday-net_http (1.0.1)
-    faraday-net_http_persistent (1.1.0)
+    faraday-net_http_persistent (1.2.0)
     faraday-patron (1.0.0)
     ffi (1.15.1)
     ffi-compiler (1.0.1)
@@ -127,7 +127,7 @@ GEM
       retriable (>= 2.0, < 4.a)
       rexml
       webrick
-    google-apis-sheets_v4 (0.8.0)
+    google-apis-sheets_v4 (0.9.0)
       google-apis-core (>= 0.4, < 2.a)
     google-cloud-core (1.6.0)
       google-cloud-env (~> 1.0)
