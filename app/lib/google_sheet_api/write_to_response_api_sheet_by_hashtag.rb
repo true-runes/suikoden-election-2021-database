@@ -261,8 +261,8 @@ module GoogleSheetApi
     def is_mentioned_to_gensosenkyo_admin(tweet)
       # gensosenkyo: 1471724029, sub_gensosenkyo: 1388758231825018881
       gensosenkyo_admin_user_id_numbers = {
-        'gensosenkyo': 1471724029,
-        'sub_gensosenkyo': 1388758231825018881
+        gensosenkyo: 1471724029,
+        sub_gensosenkyo: 1388758231825018881
       }
 
       tweet.mentions.any? { |mention| mention.user_id_number.in?(gensosenkyo_admin_user_id_numbers.values) }

@@ -24,8 +24,8 @@ class User < ApplicationRecord
 
   def gensosenkyo_admin?
     gensosenkyo_admin_user_id_numbers = {
-      'gensosenkyo': 1471724029,
-      'sub_gensosenkyo': 1388758231825018881
+      gensosenkyo: 1471724029,
+      sub_gensosenkyo: 1388758231825018881
     }
 
     id_number.in?(gensosenkyo_admin_user_id_numbers.values)

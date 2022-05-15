@@ -1,3 +1,4 @@
+# rubocop:disable Style/HashConversion
 module SuikodenDatabase
   class CheckBonusVotes
     class << self
@@ -49,3 +50,4 @@ module SuikodenDatabase
     end
   end
 end
+# rubocop:enable Style/HashConversion
