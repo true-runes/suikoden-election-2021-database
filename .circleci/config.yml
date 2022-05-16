@@ -17,7 +17,7 @@ executors:
     parameters:
       ruby_version_tag:
         type: string
-        default: '3.0.2'
+        default: '3.1.2'
       pg_version_tag:
         type: string
         default: '13.2'
@@ -26,7 +26,7 @@ jobs:
   build:
     executor:
       name: rails_executor
-      ruby_version_tag: '3.0.2'
+      ruby_version_tag: '3.1.2'
       pg_version_tag: '13.2'
     environment:
       TZ: "Asia/Tokyo"

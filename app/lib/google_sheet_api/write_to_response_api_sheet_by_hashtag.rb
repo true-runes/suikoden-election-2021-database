@@ -9,8 +9,8 @@ module GoogleSheetApi
 
     def initialize(spreadsheet_id: nil, sheet_name: nil)
       @client = GoogleSheetApi::Client.new.create
-      @spreadsheet_id = spreadsheet_id || ENV['RECOMMENDED_QUOTES_WORKSHEET_ID']
-      @sheet_name = sheet_name || ENV['RECOMMENDED_QUOTES_SHEET_NAME']
+      @spreadsheet_id = spreadsheet_id || ENV.fetch('RECOMMENDED_QUOTES_WORKSHEET_ID', nil)
+      @sheet_name = sheet_name || ENV.fetch('RECOMMENDED_QUOTES_SHEET_NAME', nil)
       # セル数が上限の 5,000,000 以下で、シート全部がカバーできるであろう範囲（A1形式しか指定できないのでこういう方法しかないと思う）
       @range = "#{@sheet_name}!A1:AD10000"
 

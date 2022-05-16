@@ -5,7 +5,7 @@ module LoggerMethods
   module ModuleMethods
     def convert_hash_to_json(options={})
       {
-        app_name: ENV['APP_NAME_FOR_LOGGER'] || options[:app_name] || '',
+        app_name: ENV.fetch('APP_NAME_FOR_LOGGER') { options[:app_name] } || '',
         message: options[:message] || '',
         time: Time.zone.now.to_s
       }.merge(options).to_json
