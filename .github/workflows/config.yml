@@ -61,10 +61,15 @@ jobs:
           key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
             ${{ runner.os }}-gem-
+      - name: Debug
+        if: ${{ always() }}
+        uses: mxschmitt/action-tmate@v3
+        with:
+          sudo: false
       - name: $ bundle install を行う
         run: |
-          rm -rf vendor/
-          bundle install --jobs 4 --retry 3 --path vendor/bundle
+          bundle config set --local path vendor/bundle
+          bundle install --jobs 4 --retry 3
       - name: $ yarn install を行う
         run: |
           yarn install
