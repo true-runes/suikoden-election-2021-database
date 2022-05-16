@@ -60,9 +60,9 @@ jobs:
         id: rubygems-cache
         with:
           path: vendor/bundle
-          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          key: v1-${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
-            ${{ runner.os }}-gem-
+            v1-${{ runner.os }}-gem-
       - name: $ bundle install を行う
         run: |
           bundle config set deployment 'true'
