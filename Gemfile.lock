@@ -280,7 +280,7 @@ GEM
     regexp_parser (2.4.0)
     remote_syslog_logger (1.0.4)
       syslog_protocol
-    representable (3.1.1)
+    representable (3.2.0)
       declarative (< 0.1.0)
       trailblazer-option (>= 0.1.1, < 0.2.0)
       uber (< 0.2.0)

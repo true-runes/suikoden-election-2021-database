@@ -67,11 +67,6 @@ jobs:
       - name: $ yarn install を行う
         run: |
           yarn install
-      - name: Debug
-        if: ${{ always() }}
-        uses: mxschmitt/action-tmate@v3
-        with:
-          sudo: false
       - name: $ bundle exec rails db:create を行う
         run: |
           bundle exec rails db:create
