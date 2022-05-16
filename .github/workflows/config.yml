@@ -64,12 +64,17 @@ jobs:
       #     restore-keys: |
       #       ${{ runner.os }}-gem-
       - name: $ bundle install を行う
+        # bundle config set deployment 'true'
         run: |
-          bundle config set deployment 'true'
           bundle install --jobs 4 --retry 3
       - name: $ yarn install を行う
         run: |
           yarn install
+      - name: Debug
+        if: ${{ always() }}
+        uses: mxschmitt/action-tmate@v3
+        with:
+          sudo: false
       - name: $ bundle exec rails db:create を行う
         run: |
           bundle exec rails db:create
