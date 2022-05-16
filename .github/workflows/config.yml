@@ -63,7 +63,8 @@ jobs:
             ${{ runner.os }}-gem-
       - name: $ bundle install を行う
         run: |
-          bundle install --jobs 4 --retry 3
+          rm -rf vendor/
+          bundle install --jobs 4 --retry 3 --path vendor/bundle
       - name: $ yarn install を行う
         run: |
           yarn install
