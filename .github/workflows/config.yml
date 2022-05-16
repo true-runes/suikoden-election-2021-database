@@ -60,9 +60,9 @@ jobs:
         id: rubygems-cache
         with:
           path: vendor/bundle
-          key: v1-${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
+          key: ${{ runner.os }}-gem-${{ hashFiles('**/Gemfile.lock') }}
           restore-keys: |
-            v1-${{ runner.os }}-gem-
+            ${{ runner.os }}-gem-
       - name: $ bundle install を行う
         run: |
           bundle config set deployment 'true'
@@ -70,6 +70,11 @@ jobs:
       - name: $ yarn install を行う
         run: |
           yarn install
+      - name: Debug
+        if: ${{ always() }}
+        uses: mxschmitt/action-tmate@v3
+        with:
+          sudo: false
       - name: $ bundle exec rails db:create を行う
         run: |
           bundle exec rails db:create
