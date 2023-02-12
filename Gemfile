@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.2'
+ruby '3.2.1'
 
 gem 'rails'
 
@@ -10,6 +10,7 @@ gem 'bugsnag'
 gem 'dotenv-rails'
 gem 'google-apis-sheets_v4'
 gem 'google-cloud-language'
+gem 'net-smtp', require: false
 gem 'paper_trail'
 gem 'pg'
 gem 'puma'

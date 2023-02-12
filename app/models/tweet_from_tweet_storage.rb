@@ -5,7 +5,6 @@ class TweetFromTweetStorage < ApplicationRecord
 
   belongs_to :user, class_name: 'UserFromTweetStorage'
 
-  validates :user, presence: true
   validates :user_id_number, presence: true
   validates :id_number, presence: true
   validates :full_text, presence: true

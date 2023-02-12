@@ -2,9 +2,9 @@ module AnalyzeSyntaxResponse
   class Token
     include ActiveModel::Model
 
-    # rubocop:disable Naming/MethodName, Layout/EmptyLinesAroundAttributeAccessor
+    # rubocop:disable Naming/MethodName
     attr_accessor :text, :partOfSpeech, :dependencyEdge, :lemma, :analyze_syntax_id
-    # rubocop:enable Naming/MethodName, Layout/EmptyLinesAroundAttributeAccessor
+    # rubocop:enable Naming/MethodName
 
     def tag
       # 戻り値は Google::Cloud::Language::V1::AnalyzeSyntaxResponse では Symbol だが、これは String である
