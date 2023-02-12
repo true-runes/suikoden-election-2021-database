@@ -6,7 +6,7 @@ module GoogleSheetApi
 
     def initialize(spreadsheet_id: nil, _sheet_name: nil)
       @client = GoogleSheetApi::Client.new.create
-      @spreadsheet_id = spreadsheet_id || ENV['TALLIED_WORKSHEET_ID']
+      @spreadsheet_id = spreadsheet_id || ENV.fetch('TALLIED_WORKSHEET_ID', nil)
       # @sheet_name = sheet_name || ENV['TALLIED_SHEET_NAME']
       # セル数が上限の 5,000,000 以下で、シート全部がカバーできるであろう範囲（A1形式しか指定できないのでこういう方法しかないと思う）
       # @range = "#{@sheet_name}!A1:AD10000"
@@ -46,10 +46,10 @@ module GoogleSheetApi
         sliced_tweets.each do |tweet_or_dm|
           # 分岐が雑だが、#execute の方で category の内容が担保されているのでひとまずこれで
           if category == 'DM'
-            @spreadsheet_id = ENV['TALLIED_DIRECT_MESSAGES_WORKSHEET_ID']
+            @spreadsheet_id = ENV.fetch('TALLIED_DIRECT_MESSAGES_WORKSHEET_ID', nil)
             inserted_100_rows << row_data_for_dm(tweet_or_dm)
           else
-            @spreadsheet_id = ENV['TALLIED_WORKSHEET_ID']
+            @spreadsheet_id = ENV.fetch('TALLIED_WORKSHEET_ID', nil)
             inserted_100_rows << row_data_for_tweet(tweet_or_dm)
           end
         end
