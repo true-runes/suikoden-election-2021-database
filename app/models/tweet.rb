@@ -14,13 +14,23 @@ class Tweet < ApplicationRecord
   scope :be_retweet, -> { where(is_retweet: true) }
   scope :contains_hashtag, ->(hashtag) { joins(:hashtags).where(hashtags: { text: hashtag }) }
   scope :mentioned_user, ->(user) { joins(:mentions).where(mentions: { user_id_number: user.id_number }) }
+  scope :is_public, -> { where(is_public: true) }
 
   # TODO: TweetStorage の方にも書く
   def self.filter_by_tweeted_at(from, to)
     where(tweeted_at: from..to)
   end
 
-  def self.not_by_gensosenkyo_families
+  def self.gensosenkyo_2021_votes
+    valid_term_votes
+      .not_retweet
+      .contains_hashtag('幻水総選挙2021')
+      .not_by_gensosenkyo_main
+      .order(tweeted_at: :asc)
+      .order(id_number: :asc)
+  end
+
+  def self.not_by_gensosenkyo_family
     # gensosenkyo: 1471724029,
     # sub_gensosenkyo: 1388758231825018881
 
@@ -53,6 +63,24 @@ class Tweet < ApplicationRecord
     end_datetime = Time.zone.parse('2021-06-13 11:59:59')
 
     where(tweeted_at: begin_datetime..end_datetime)
+  end
+
+  def self.odai_shosetsu
+    not_retweet
+      .not_by_gensosenkyo_main
+      .contains_hashtag('幻水総選挙お題小説')
+      .where(tweeted_at: ..Time.zone.parse('2021-06-07 02:20:00'))
+      .order(tweeted_at: :asc)
+      .order(id_number: :asc)
+  end
+
+  def self.oshi_serifu
+    not_retweet
+      .not_by_gensosenkyo_main
+      .contains_hashtag('幻水総選挙推し台詞')
+      .where(tweeted_at: ..Time.zone.parse('2021-06-10 23:59:59'))
+      .order(tweeted_at: :asc)
+      .order(id_number: :asc)
   end
 
   def valid_term_vote?
@@ -109,8 +137,8 @@ class Tweet < ApplicationRecord
   def is_mentioned_to_gensosenkyo_admin?
     # gensosenkyo: 1471724029, sub_gensosenkyo: 1388758231825018881
     gensosenkyo_admin_user_id_numbers = {
-      'gensosenkyo': 1471724029,
-      'sub_gensosenkyo': 1388758231825018881
+      gensosenkyo: 1471724029,
+      sub_gensosenkyo: 1388758231825018881
     }
 
     mentions.any? { |mention| mention.user_id_number.in?(gensosenkyo_admin_user_id_numbers.values) }

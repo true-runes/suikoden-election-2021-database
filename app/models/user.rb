@@ -24,10 +24,18 @@ class User < ApplicationRecord
 
   def gensosenkyo_admin?
     gensosenkyo_admin_user_id_numbers = {
-      'gensosenkyo': 1471724029,
-      'sub_gensosenkyo': 1388758231825018881
+      gensosenkyo: 1471724029,
+      sub_gensosenkyo: 1388758231825018881
     }
 
     id_number.in?(gensosenkyo_admin_user_id_numbers.values)
+  end
+
+  def self.who_vote_two_or_more_without_not_public
+    self.select { |user| user.tweets.gensosenkyo_2021_votes.is_public.count > 1 }
+  end
+
+  def self.did_vote_without_not_public
+    self.select { |user| user.tweets.gensosenkyo_2021_votes.is_public.count > 0 }
   end
 end
