@@ -72,7 +72,7 @@ GEM
     bootsnap (1.16.0)
       msgpack (~> 1.2)
     buftok (0.3.0)
-    bugsnag (6.25.2)
+    bugsnag (6.26.0)
       concurrent-ruby (~> 1.0)
     builder (3.2.4)
     byebug (11.1.3)
