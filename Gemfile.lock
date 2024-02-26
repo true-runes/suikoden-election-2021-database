@@ -96,9 +96,9 @@ GEM
     diff-lcs (1.5.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    dotenv (3.0.2)
-    dotenv-rails (3.0.2)
-      dotenv (= 3.0.2)
+    dotenv (3.0.3)
+    dotenv-rails (3.0.3)
+      dotenv (= 3.0.3)
       railties (>= 6.1)
     drb (2.2.0)
       ruby2_keywords
@@ -310,7 +310,7 @@ GEM
     rdoc (6.6.2)
       psych (>= 4.0.0)
     regexp_parser (2.8.1)
-    reline (0.4.2)
+    reline (0.4.3)
       io-console (~> 0.5)
     remote_syslog_logger (1.0.4)
       syslog_protocol
