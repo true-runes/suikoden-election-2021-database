@@ -7,6 +7,7 @@ gem 'rails'
 
 gem 'bootsnap', require: false
 gem 'bugsnag'
+gem 'csv'
 gem 'dotenv-rails'
 gem 'google-apis-sheets_v4'
 gem 'google-cloud-language'
