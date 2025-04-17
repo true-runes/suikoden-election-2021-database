@@ -28,7 +28,6 @@ end
 group :development do
   gem 'listen'
   gem 'rubocop-rails'
-  gem 'spring'
 end
 
 group :test do
