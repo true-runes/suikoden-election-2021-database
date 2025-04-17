@@ -22,7 +22,7 @@ module TwitterRestApi
       # APIで持ってきた「今現在protectedなユーザー」のデータを、データベース上に格納されてい情報から持ってくる
       # そのデータにおいてユーザがpublicだった場合にのみ、データベース上のデータを更新する
       ActiveRecord::Base.transaction do
-        User.where(id_number: @not_public_user_objects.map(&:id)).each do |user|
+        User.where(id_number: @not_public_user_objects.map(&:id)).find_each do |user|
           unless user.protected?
             # Twitter のオブジェクト上の id という属性は、User のオブジェクト上の id_number という属性と等しい
             latest_user_on_twitter = @not_public_user_objects.find do |user_object|
@@ -45,7 +45,7 @@ module TwitterRestApi
       # APIで持ってきた「今現在publicなユーザー」のデータを、データベース上に格納されてい情報から持ってくる
       # そしてそのデータを更新する（スクリーンネームや名前の変更がありうるので、更新のための条件は設けない）
       ActiveRecord::Base.transaction do
-        User.where(id_number: @public_user_objects.map(&:id)).each do |user|
+        User.where(id_number: @public_user_objects.map(&:id)).find_each do |user|
           # Twitter のオブジェクト上の id という属性は、User のオブジェクト上の id_number という属性と等しい
           latest_user_on_twitter = @public_user_objects.find do |user_object|
             user_object.id == user.id_number

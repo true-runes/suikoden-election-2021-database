@@ -18,14 +18,14 @@ module TwitterRestApi
 
       # 公開ツイート -> 鍵ツイート or 削除ツイート
       ActiveRecord::Base.transaction do
-        Tweet.where(id_number: @not_public_tweet_id_numbers).each do |tweet|
+        Tweet.where(id_number: @not_public_tweet_id_numbers).find_each do |tweet|
           tweet.update!(is_public: false) if tweet.public?
         end
       end
 
       # 鍵ツイート -> 公開ツイート
       ActiveRecord::Base.transaction do
-        Tweet.where(id_number: @public_tweet_id_numbers).each do |tweet|
+        Tweet.where(id_number: @public_tweet_id_numbers).find_each do |tweet|
           tweet.update!(is_public: true) unless tweet.public?
         end
       end
@@ -50,7 +50,7 @@ module TwitterRestApi
       end
 
       @not_public_tweet_id_numbers = not_public_tweet_id_numbers
-      @public_tweet_id_numbers = Tweet.all.pluck(:id_number) - not_public_tweet_id_numbers
+      @public_tweet_id_numbers = Tweet.pluck(:id_number) - not_public_tweet_id_numbers
     end
   end
 end

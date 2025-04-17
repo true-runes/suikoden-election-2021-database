@@ -6,7 +6,7 @@ class Selector
       BySearchWordTweet.where(
         search_word: "##{hashtag}"
       ).where.not(
-        id_number: Tweet.contains_hashtag(hashtag).pluck(:id_number)
+        id_number: Tweet.contains_hashtag(hashtag).select(:id_number)
       )
     end
   end

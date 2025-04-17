@@ -87,7 +87,7 @@ class Tweet < ApplicationRecord
     begin_datetime = Time.zone.parse('2021-06-11 21:00:00')
     end_datetime = Time.zone.parse('2021-06-13 11:59:59')
 
-    tweeted_at >= begin_datetime && tweeted_at <= end_datetime
+    tweeted_at.between?(begin_datetime, end_datetime)
   end
 
   def has_this_hashtag?(hashtag)
