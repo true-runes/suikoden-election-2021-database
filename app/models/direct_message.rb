@@ -1,7 +1,7 @@
 class DirectMessage < ApplicationRecord
   has_paper_trail
 
-  serialize :api_response, JSON
+  serialize :api_response, coder: JSON
   belongs_to :user
   has_one :analyze_syntax
 
