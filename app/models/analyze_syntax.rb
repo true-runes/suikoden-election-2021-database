@@ -298,7 +298,7 @@ class AnalyzeSyntax < ApplicationRecord
   ###################################################################
   def words_with_basic_filters
     filtered_tokens = convert_analyze_syntax_response_token_objects.select do |token|
-      token.tag == 'NOUN' || token.tag == 'VERB' || token.tag == 'AFFIX'
+      ['NOUN', 'VERB', 'AFFIX'].include?(token.tag)
     end
 
     filtered_tokens.map(&:lemma)

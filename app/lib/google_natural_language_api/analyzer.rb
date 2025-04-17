@@ -17,7 +17,7 @@ module GoogleNaturalLanguageApi
           analyzer.create_analyze_syntax_record(tweet, category: 'tweet') if AnalyzeSyntax.find_by(tweet_id: tweet.id).blank?
         end
 
-        DirectMessage.all.each do |direct_message|
+        DirectMessage.find_each do |direct_message|
           analyzer.create_analyze_syntax_record(direct_message, category: 'direct_message') if AnalyzeSyntax.find_by(direct_message_id: direct_message.id).blank?
         end
       end
