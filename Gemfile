@@ -12,6 +12,7 @@ gem 'dotenv-rails'
 gem 'google-apis-sheets_v4'
 gem 'google-cloud-language'
 gem 'net-smtp', require: false
+gem 'nkf'
 gem 'paper_trail'
 gem 'pg'
 gem 'puma'
