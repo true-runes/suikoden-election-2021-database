@@ -5,7 +5,7 @@ jobs:
     name: GitHub Actions CI
     runs-on: ubuntu-latest
     container:
-      image: ruby:3.4.4
+      image: ruby:3.4.5
       env:
         BUNDLE_PATH: vendor/bundle
         RAILS_ENV: test
